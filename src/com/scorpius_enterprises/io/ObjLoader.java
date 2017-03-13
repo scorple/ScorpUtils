@@ -14,15 +14,9 @@ import java.util.stream.IntStream;
  */
 public class ObjLoader
 {
-    public static final int BYTE_BITS = 8;
-
-    public static final int INT_BYTES   = Integer.SIZE / BYTE_BITS;
-    public static final int FLOAT_BYTES = Float.SIZE / BYTE_BITS;
-
-    public static final int VERTEX_SIZE   = 3;
-    public static final int TEXCOORD_SIZE = 2;
-    public static final int NORMAL_SIZE   = 3;
-    public static final int INDEX_SIZE    = 3;
+    public static final int POSITION_SIZE         = 3;
+    public static final int TEXTURE_POSITION_SIZE = 2;
+    public static final int NORMAL_VECTOR_SIZE    = 3;
 
     public static final int FACE_INDICES = 3;
 
@@ -86,7 +80,7 @@ public class ObjLoader
             switch (splitLine[0])
             {
                 case "v":
-                    for (int i = 1; i < VERTEX_SIZE + 1; ++i)
+                    for (int i = 1; i < POSITION_SIZE + 1; ++i)
                     {
                         posCoords.add(Float.parseFloat(splitLine[i]));
                     }
@@ -96,7 +90,7 @@ public class ObjLoader
                     texCoords.add(1.0f - Float.parseFloat(splitLine[2]));
                     break;
                 case "vn":
-                    for (int i = 1; i < NORMAL_SIZE + 1; ++i)
+                    for (int i = 1; i < NORMAL_VECTOR_SIZE + 1; ++i)
                     {
                         normalVecComps.add(Float.parseFloat(splitLine[i]));
                     }
@@ -120,7 +114,7 @@ public class ObjLoader
                     {
                         if (indices.contains(vi[i]))
                         {
-                            int nextIndexTripleStartIndex = vi[i] * VERTEX_SIZE;
+                            int nextIndexTripleStartIndex = vi[i] * POSITION_SIZE;
                             for (int j = 0; j < 3; ++j)
                             {
                                 posCoords.add(posCoords.get(nextIndexTripleStartIndex + j));
@@ -135,9 +129,9 @@ public class ObjLoader
                             texCoordsByPosIndex.put(vi[i],
                                                     new Float[]{texCoords.get(
                                                         ti[i] *
-                                                        TEXCOORD_SIZE), texCoords.get(
+                                                        TEXTURE_POSITION_SIZE), texCoords.get(
                                                         ti[i] *
-                                                        TEXCOORD_SIZE +
+                                                        TEXTURE_POSITION_SIZE +
                                                         1)});
                         }
 
@@ -145,9 +139,9 @@ public class ObjLoader
                         {
                             normalVecCompsByPosIndex.put(vi[i],
                                                          new Float[]{normalVecComps.get(
-                                                             ni[i] * NORMAL_SIZE), normalVecComps.get(
-                                                             ni[i] * NORMAL_SIZE + 1), normalVecComps.get(
-                                                             ni[i] * NORMAL_SIZE + 2)});
+                                                             ni[i] * NORMAL_VECTOR_SIZE), normalVecComps.get(
+                                                             ni[i] * NORMAL_VECTOR_SIZE + 1), normalVecComps.get(
+                                                             ni[i] * NORMAL_VECTOR_SIZE + 2)});
                         }
                     }
                     break;
@@ -156,12 +150,12 @@ public class ObjLoader
 
         if (texCoords.size() > 0)
         {
-            texCoordsInVertexOrder = new Float[texCoordsByPosIndex.size() * TEXCOORD_SIZE];
+            texCoordsInVertexOrder = new Float[texCoordsByPosIndex.size() * TEXTURE_POSITION_SIZE];
         }
 
         if (normalVecComps.size() > 0)
         {
-            normalVecCompsInVertexOrder = new Float[normalVecCompsByPosIndex.size() * NORMAL_SIZE];
+            normalVecCompsInVertexOrder = new Float[normalVecCompsByPosIndex.size() * NORMAL_VECTOR_SIZE];
         }
 
         try
@@ -173,13 +167,13 @@ public class ObjLoader
                 texCoordsByPosIndex.keySet()
                                    .stream()
                                    .parallel()
-                                   .forEach(vertexIndex -> IntStream.range(0, TEXCOORD_SIZE)
+                                   .forEach(vertexIndex -> IntStream.range(0, TEXTURE_POSITION_SIZE)
                                                                     .parallel()
                                                                     .forEach(
                                                                         texCoordIndex ->
                                                                             finalTexCoordsInVertexOrder[
                                                                                 vertexIndex *
-                                                                                TEXCOORD_SIZE +
+                                                                                TEXTURE_POSITION_SIZE +
                                                                                 texCoordIndex] =
                                                                                 texCoordsByPosIndex
                                                                                     .get(
@@ -193,12 +187,12 @@ public class ObjLoader
                 normalVecCompsByPosIndex.keySet()
                                         .stream()
                                         .parallel()
-                                        .forEach(vertexIndex -> IntStream.range(0, NORMAL_SIZE)
+                                        .forEach(vertexIndex -> IntStream.range(0, NORMAL_VECTOR_SIZE)
                                                                          .parallel()
                                                                          .forEach(normalCoordIndex ->
                                                                                       finalNormalsInVertexOrder[
                                                                                           vertexIndex *
-                                                                                          NORMAL_SIZE +
+                                                                                          NORMAL_VECTOR_SIZE +
                                                                                           normalCoordIndex] =
                                                                                           normalVecCompsByPosIndex.get(
                                                                                               vertexIndex)[normalCoordIndex]));
