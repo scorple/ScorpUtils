@@ -1,5 +1,6 @@
 package com.scorpius_enterprises.log;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -10,24 +11,235 @@ import java.util.Arrays;
  */
 public class Logger
 {
+    private static Logger instance;
+
     private static final int STACK_TRACE_DEPTH = 2;
 
-    private static final int LOG_LEVEL = 0;
+    private static       int               LOG_LEVEL       = 0;
+    private static final ArrayList<String> REGISTERED_TAGS = new ArrayList<>();
 
-    private static final String GENERAL = "GENERAL";
-    private static final String INFO    = "INFO";
-    private static final String DEBUG   = "DEBUG";
+    public enum E_TYPE
+    {
+        GENERAL,
+        INFO,
+        DEBUG,
+        WARNING,
+        ERROR
+    }
+
+    private static final ArrayList<E_TYPE> DISABLED_TYPES = new ArrayList<>();
 
     private static final String SPLIT = ": ";
 
-    private enum E_TAG
+    private Logger()
     {
 
     }
 
-    private static final E_TAG[] ENABLED_TAGS = new E_TAG[]{
+    /**
+     * Must be called to ensure there is an instance of this otherwise static
+     * class such that {@code LOG_LEVEL} and {@code REGISTERED_TAGS} data will
+     * not be destroyed.
+     *
+     * @param LOG_LEVEL int: The maximum level of logs accompanied by a {@code
+     *                  level} parameter to display.
+     */
+    public static void init(final int LOG_LEVEL)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+        }
 
-    };
+        Logger.LOG_LEVEL = LOG_LEVEL;
+    }
+
+    /**
+     * May be called to enable a single tag for logging. Log method calls
+     * including a tag parameter will only be displayed if that tag is in the
+     * list of registered tags.
+     *
+     * @param tag String: The tag to register.
+     */
+    public static void registerTag(String tag)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to register tag before initializing, created Logger instance");
+        }
+
+        if (!REGISTERED_TAGS.contains(tag))
+        {
+            Logger.REGISTERED_TAGS.add(tag);
+        }
+    }
+
+    /**
+     * May be called to enable a list of tags for logging. Log method calls
+     * including a tag parameter will only be displayed if that tag is in the
+     * list of registered tags.
+     *
+     * @param tags String[]: The list of tags to register.
+     */
+    public static void registerTags(String[] tags)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to register tag before initializing, created Logger instance");
+        }
+
+        Arrays.stream(tags).parallel().forEachOrdered(tag ->
+                                                      {
+                                                          if (!REGISTERED_TAGS.contains(tag))
+                                                          {
+                                                              Logger.REGISTERED_TAGS.add(tag);
+                                                          }
+                                                      });
+    }
+
+    /**
+     * May be called to enable a list of tags for logging. Log method calls
+     * including a tag parameter will only be displayed if that tag is in the
+     * list of registered tags.
+     *
+     * @param tags ArrayList: The list of tags to register.
+     */
+    public static void registerTags(ArrayList<String> tags)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to register tag before initializing, created Logger instance");
+        }
+
+        tags.stream().parallel().forEachOrdered(tag ->
+                                                {
+                                                    if (!REGISTERED_TAGS.contains(tag))
+                                                    {
+                                                        Logger.REGISTERED_TAGS.add(tag);
+                                                    }
+                                                });
+    }
+
+    /**
+     * May be called to prevent a single log type from being displayed. All log
+     * types will display by default.
+     *
+     * @param type E_TYPE: The type of log to prevent from displaying.
+     */
+    public static void disableType(E_TYPE type)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to disable type before initializing, created Logger" +
+                 "instance");
+        }
+
+        if (!DISABLED_TYPES.contains(type))
+        {
+            DISABLED_TYPES.add(type);
+        }
+    }
+
+    /**
+     * May be called to prevent any from a list of log types from being
+     * displayed. All log types will display by default.
+     *
+     * @param types E_TYPE[]: The list of log types to prevent from displaying.
+     */
+    public static void disableTypes(E_TYPE[] types)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to disable type before initializing, created Logger" +
+                 "instance");
+        }
+
+        Arrays.stream(types).parallel().forEachOrdered(type ->
+                                                       {
+                                                           if (!DISABLED_TYPES.contains(type))
+                                                           {
+                                                               DISABLED_TYPES.add(type);
+                                                           }
+                                                       });
+    }
+
+    /**
+     * May be called to prevent any from a list of log types from being
+     * displayed. All log types will display by default.
+     *
+     * @param types ArrayList: The list of log types to prevent from
+     *              displaying.
+     */
+    public static void disableTypes(ArrayList<E_TYPE> types)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to disable type before initializing, created Logger" +
+                 "instance");
+        }
+
+        types.stream().parallel().forEachOrdered(type ->
+                                                 {
+                                                     if (!DISABLED_TYPES.contains(type))
+                                                     {
+                                                         DISABLED_TYPES.add(type);
+                                                     }
+                                                 });
+    }
+
+    /**
+     * May be called to undo preventing a log type from being displayed. All
+     * log types are enabled by default.
+     *
+     * @param type E_TYPE: The log type to allow to display.
+     */
+    public static void enableType(E_TYPE type)
+    {
+        if (DISABLED_TYPES.contains(type))
+        {
+            DISABLED_TYPES.remove(type);
+        }
+    }
+
+    /**
+     * May be called to undo preventing any from a list of log types from being
+     * displayed. All log types are enabled by default.
+     *
+     * @param types E_TYPE[]: The list of log types to allow to display.
+     */
+    public static void enableTypes(E_TYPE[] types)
+    {
+        Arrays.stream(types).parallel().forEachOrdered(type ->
+                                                       {
+                                                           if (DISABLED_TYPES.contains(type))
+                                                           {
+                                                               DISABLED_TYPES.remove(type);
+                                                           }
+                                                       });
+    }
+
+    /**
+     * May be called to undo preventing any from a list of log types from being
+     * displayed. All log types are enabled by default.
+     *
+     * @param types ArrayList: The list of log types to allow to display.
+     */
+    public static void enableTypes(ArrayList<E_TYPE> types)
+    {
+        types.stream().parallel().forEachOrdered(type ->
+                                                 {
+                                                     if (DISABLED_TYPES.contains(type))
+                                                     {
+                                                         DISABLED_TYPES.remove(type);
+                                                     }
+                                                 });
+    }
 
     private static String getClassName(final StackTraceElement[] stackTrace)
     {
@@ -52,102 +264,428 @@ public class Logger
                            getMethodName(stackTrace) + ": " + log);
     }
 
-    private static void processLog(final StackTraceElement[] stackTrace, final String type, final String log)
+    private static void processLog(final StackTraceElement[] stackTrace, final E_TYPE type, final String log)
     {
-        postLog(stackTrace, type, log);
+        if (!DISABLED_TYPES.contains(type))
+        {
+            postLog(stackTrace, type.toString(), log);
+        }
     }
 
     private static void processLog(final StackTraceElement[] stackTrace,
-                                   final String type,
+                                   final E_TYPE type,
                                    final String log,
                                    final int level)
     {
-        if (LOG_LEVEL >= level)
+        if (!DISABLED_TYPES.contains(type) && LOG_LEVEL >= level)
         {
-            postLog(stackTrace, type, log);
+            postLog(stackTrace, type.toString() + SPLIT + level, log);
         }
     }
 
     private static void processLog(final StackTraceElement[] stackTrace,
-                                   final String type,
+                                   final E_TYPE type,
                                    final String log,
-                                   final E_TAG tag)
+                                   final String tag)
     {
-        if (Arrays.stream(ENABLED_TAGS).anyMatch(e_tag -> e_tag == tag))
+        if (!DISABLED_TYPES.contains(type) && REGISTERED_TAGS.stream().parallel().anyMatch(e_tag -> e_tag.equals(tag)))
         {
-            postLog(stackTrace, type + SPLIT + tag.toString(), log);
+            postLog(stackTrace, type.toString() + SPLIT + tag, log);
         }
     }
 
     private static void processLog(final StackTraceElement[] stackTrace,
-                                   final String type,
+                                   final E_TYPE type,
                                    final String log,
-                                   final E_TAG tag,
+                                   final String tag,
                                    final int level)
     {
-        if (LOG_LEVEL >= level && Arrays.stream(ENABLED_TAGS).anyMatch(e_tag -> e_tag == tag))
+        if (!DISABLED_TYPES.contains(type) && LOG_LEVEL >= level &&
+            REGISTERED_TAGS.stream().parallel().anyMatch(e_tag -> e_tag.equals(tag)))
         {
-            postLog(stackTrace, type + SPLIT + tag.toString(), log);
+            postLog(stackTrace, type.toString() + SPLIT + level + SPLIT + tag, log);
         }
     }
 
-    public static void log(String log)
+    /**
+     * Log a {@code GENERAL} message with no given purpose.
+     * <p>
+     * This log has no accompanying parameters and will always be displayed
+     * unless {@code GENERAL} logs are disabled.
+     *
+     * @param log String: The log message to print out.
+     */
+    public static void log(final String log)
     {
-        processLog(Thread.currentThread().getStackTrace(), GENERAL, log);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.GENERAL, log);
     }
 
-    public static void log(String log, int level)
+    /**
+     * Log a {@code GENERAL} message with no given purpose.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param level int: The level of this log.
+     *
+     * @see #init(int)
+     */
+    public static void log(final String log, final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), GENERAL, log, level);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.GENERAL, log, level);
     }
 
-    public static void log(String log, E_TAG tag)
+    /**
+     * Log a {@code GENERAL} message with no given purpose.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     *
+     * @param log String: The log message to print out.
+     * @param tag String: The tag which must be registered for this log to be
+     *            displayed.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     */
+    public static void log(final String log, final String tag)
     {
-        processLog(Thread.currentThread().getStackTrace(), GENERAL, log, tag);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.GENERAL, log, tag);
     }
 
-    public static void log(String log, E_TAG tag, int level)
+    /**
+     * Log a {@code GENERAL} message with no given purpose.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param tag   String: The tag which must be registered for this log to be
+     *              displayed.
+     * @param level int: The level of this log.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     * @see #init(int)
+     */
+    public static void log(final String log, final String tag, final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), GENERAL, log, tag, level);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.GENERAL, log, tag, level);
     }
 
-    public static void logI(String log)
+    /**
+     * Log an {@code INFO} message to provide information about program state
+     * which may be helpful in understanding program progression and status.
+     * <p>
+     * This log has no accompanying parameters and will always be displayed
+     * unless {@code INFO} logs are disabled.
+     *
+     * @param log String: The log message to print out.
+     */
+    public static void logI(final String log)
     {
-        processLog(Thread.currentThread().getStackTrace(), INFO, log);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.INFO, log);
     }
 
-    public static void logI(String log, int level)
+    /**
+     * Log an {@code INFO} message to provide information about program state
+     * which may be helpful in understanding program progression and status.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param level int: The level of this log.
+     *
+     * @see #init(int)
+     */
+    public static void logI(final String log, final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), INFO, log, level);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.INFO, log, level);
     }
 
-    public static void logI(String log, E_TAG tag)
+    /**
+     * Log an {@code INFO} message to provide information about program state
+     * which may be helpful in understanding program progression and status.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     *
+     * @param log String: The log message to print out.
+     * @param tag String: The tag which must be registered for this log to be
+     *            displayed.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     */
+    public static void logI(final String log, final String tag)
     {
-        processLog(Thread.currentThread().getStackTrace(), INFO, log, tag);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.INFO, log, tag);
     }
 
-    public static void logI(String log, E_TAG tag, int level)
+    /**
+     * Log an {@code INFO} message to provide information about program state
+     * which may be helpful in understanding program progression and status.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param tag   String: The tag which must be registered for this log to be
+     *              displayed.
+     * @param level int: The level of this log.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     * @see #init(int)
+     */
+    public static void logI(final String log, final String tag, final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), INFO, log, tag, level);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.INFO, log, tag, level);
     }
 
-    public static void logD(String log)
+    /**
+     * Log a {@code DEBUG} message to provide information about program state
+     * which may be helpful in diagnosing problems.
+     * <p>
+     * This log has no accompanying parameters and will always be displayed
+     * unless {@code DEBUG} logs are disabled.
+     *
+     * @param log String: The log message to print out.
+     */
+    public static void logD(final String log)
     {
-        processLog(Thread.currentThread().getStackTrace(), DEBUG, log);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.DEBUG, log);
     }
 
-    public static void logD(String log, int level)
+    /**
+     * Log a {@code DEBUG} message to provide information about program state
+     * which may be helpful in diagnosing problems.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param level int: The level of this log.
+     *
+     * @see #init(int)
+     */
+    public static void logD(final String log, final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), DEBUG, log, level);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.DEBUG, log, level);
     }
 
-    public static void logD(String log, E_TAG tag)
+    /**
+     * Log a {@code DEBUG} message to provide information about program state
+     * which may be helpful in diagnosing problems.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     *
+     * @param log String: The log message to print out.
+     * @param tag String: The tag which must be registered for this log to be
+     *            displayed.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     */
+    public static void logD(final String log, final String tag)
     {
-        processLog(Thread.currentThread().getStackTrace(), DEBUG, log, tag);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.DEBUG, log, tag);
     }
 
-    public static void logD(String log, E_TAG tag, int level)
+    /**
+     * Log a {@code DEBUG} message to provide information about program state
+     * which may be helpful in diagnosing problems.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param tag   String: The tag which must be registered for this log to be
+     *              displayed.
+     * @param level int: The level of this log.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     * @see #init(int)
+     */
+    public static void logD(final String log, final String tag, final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), DEBUG, log, tag, level);
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.DEBUG, log, tag, level);
+    }
+
+    /**
+     * Log a {@code WARNING} message to report that something unexpected, but
+     * not necessarily problematic, has happened.
+     * <p>
+     * This log has no accompanying parameters and will always be displayed
+     * unless {@code WARNING} logs are disabled.
+     *
+     * @param log String: The log message to print out.
+     */
+    public static void logW(final String log)
+    {
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.WARNING, log);
+    }
+
+    /**
+     * Log a {@code WARNING} message to report that something unexpected, but
+     * not necessarily problematic, has happened.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param level int: The level of this log.
+     *
+     * @see #init(int)
+     */
+    public static void logW(final String log, final int level)
+    {
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.WARNING, log, level);
+    }
+
+    /**
+     * Log a {@code WARNING} message to report that something unexpected, but
+     * not necessarily problematic, has happened.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     *
+     * @param log String: The log message to print out.
+     * @param tag String: The tag which must be registered for this log to be
+     *            displayed.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     */
+    public static void logW(final String log, final String tag)
+    {
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.WARNING, log, tag);
+    }
+
+    /**
+     * Log a {@code WARNING} message to report that something unexpected, but
+     * not necessarily problematic, has happened.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param tag   String: The tag which must be registered for this log to be
+     *              displayed.
+     * @param level int: The level of this log.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     * @see #init(int)
+     */
+    public static void logW(final String log, final String tag, final int level)
+    {
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.WARNING, log, tag, level);
+    }
+
+    /**
+     * Log an {@code ERROR} message to report that something bad has happened.
+     * <p>
+     * This log has no accompanying parameters and will always be displayed
+     * unless {@code ERROR} logs are disabled.
+     *
+     * @param log String: The log message to print out.
+     */
+    public static void logE(final String log)
+    {
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.ERROR, log);
+    }
+
+    /**
+     * Log an {@code ERROR} message to report that something bad has happened.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param level int: The level of this log.
+     *
+     * @see #init(int)
+     */
+    public static void logE(final String log, final int level)
+    {
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.ERROR, log, level);
+    }
+
+    /**
+     * Log an {@code ERROR} message to report that something bad has happened.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     *
+     * @param log String: The log message to print out.
+     * @param tag String: The tag which must be registered for this log to be
+     *            displayed.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     */
+    public static void logE(final String log, final String tag)
+    {
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.ERROR, log, tag);
+    }
+
+    /**
+     * Log an {@code ERROR} message to report that something bad has happened.
+     * <p>
+     * This log is accompanied by a log {@code tag} parameter and will only be
+     * displayed if that log tag has been registered with the {@link Logger}.
+     * <p>
+     * This log is accompanied by a log {@code level} parameter and will only
+     * be displayed if that log level is less than or equal to the {@link
+     * Logger Logger's} current {@code LOG_LEVEL}.
+     *
+     * @param log   String: The log message to print out.
+     * @param tag   String: The tag which must be registered for this log to be
+     *              displayed.
+     * @param level int: The level of this log.
+     *
+     * @see #registerTag(String)
+     * @see #registerTags(String[])
+     * @see #registerTags(ArrayList)
+     * @see #init(int)
+     */
+    public static void logE(final String log, final String tag, final int level)
+    {
+        processLog(Thread.currentThread().getStackTrace(), E_TYPE.ERROR, log, tag, level);
     }
 }

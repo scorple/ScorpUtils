@@ -260,7 +260,7 @@ public class ObjLoader
         }
         catch (Exception X)
         {
-            Logger.logD("encountered bad index for model <" + fileName + ">, check model format");
+            Logger.logE("encountered bad index for model <" + fileName + ">, check model format");
             X.printStackTrace();
             return;
         }
