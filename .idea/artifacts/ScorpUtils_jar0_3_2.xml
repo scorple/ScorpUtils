@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="ScorpUtils:jar0.3.2">
+  <artifact type="jar" name="ScorpUtils:jar0.3.2">
     <output-path>$PROJECT_DIR$/out/artifacts/ScorpUtils_jar0_3_2</output-path>
     <root id="archive" name="ScorpUtils-0.3.2.jar">
       <element id="module-output" name="ScorpUtils" />

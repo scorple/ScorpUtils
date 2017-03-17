@@ -141,11 +141,11 @@ public class DaeLoader
 
         numIndices[0] = indices.size();
 
-        Logger.logD("" + numIndices[0]);
+        //Logger.logD("" + numIndices[0]);
 
         if (posCoordArray != null && posCoords.size() > 0)
         {
-            Logger.logD("" + posCoords.size());
+            //Logger.logD("" + posCoords.size());
 
             posCoordArray[0] = new float[posCoords.size()];
             IntStream.range(0, posCoordArray[0].length).parallel().forEach(i -> posCoordArray[0][i] = posCoords.get(i));
@@ -154,7 +154,7 @@ public class DaeLoader
         {
             if (texCoordsInVertexOrder != null)
             {
-                Logger.logD("" + texCoordsInVertexOrder.length);
+                //Logger.logD("" + texCoordsInVertexOrder.length);
 
                 texCoordArray[0] = new float[texCoordsInVertexOrder.length];
                 Float[] finalTexCoordsInVertexOrder1 = texCoordsInVertexOrder;
@@ -171,7 +171,7 @@ public class DaeLoader
         {
             if (normalVecCompsInVertexOrder != null)
             {
-                Logger.logD("" + normalVecCompsInVertexOrder.length);
+                //Logger.logD("" + normalVecCompsInVertexOrder.length);
 
                 normalVecCompArray[0] = new float[normalVecCompsInVertexOrder.length];
                 Float[] finalNormalsInVertexOrder1 = normalVecCompsInVertexOrder;
@@ -186,7 +186,7 @@ public class DaeLoader
         }
         if (vertexIndexArray != null && indices.size() > 0)
         {
-            Logger.logD("" + indices.size());
+            //Logger.logD("" + indices.size());
 
             vertexIndexArray[0] = new int[indices.size()];
             IntStream.range(0, vertexIndexArray[0].length)
@@ -238,7 +238,7 @@ public class DaeLoader
         @Override
         public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException
         {
-            Logger.logD(qName);
+            //Logger.logD(qName);
 
             if (!foundMesh && qName.equals("mesh"))
             {
@@ -278,7 +278,7 @@ public class DaeLoader
         @Override
         public void endElement(String uri, String localName, String qName) throws SAXException
         {
-            Logger.logD(qName);
+            //Logger.logD(qName);
 
             if (foundMesh && qName.equals("mesh"))
             {
@@ -295,12 +295,28 @@ public class DaeLoader
                 {
                     String string = new String(ch, start, length);
 
-                    Logger.logD(string);
+                    //Logger.logD(string);
 
                     String[] splitString = string.split(" ");
-                    Arrays.stream(splitString).parallel().forEachOrdered(s -> posCoords.add(Float.parseFloat(s)));
 
-                    Logger.logD("" + posCoords.size());
+                    IntStream.range(0, splitString.length / 3).map(i -> i * 3).parallel().forEachOrdered(i ->
+                                                                                                         {
+                                                                                                             posCoords.add(
+                                                                                                                 Float.parseFloat(
+                                                                                                                     splitString[i]));
+                                                                                                             posCoords.add(
+                                                                                                                 Float.parseFloat(
+                                                                                                                     splitString[
+                                                                                                                         i +
+                                                                                                                         2]));
+                                                                                                             posCoords.add(
+                                                                                                                 -Float.parseFloat(
+                                                                                                                     splitString[
+                                                                                                                         i +
+                                                                                                                         1]));
+                                                                                                         });
+
+                    //Logger.logD("" + posCoords.size());
 
                     foundPositions = false;
                 }
@@ -308,12 +324,12 @@ public class DaeLoader
                 {
                     String string = new String(ch, start, length);
 
-                    Logger.logD(string);
+                    //Logger.logD(string);
 
                     String[] splitString = string.split(" ");
                     Arrays.stream(splitString).parallel().forEachOrdered(s -> normalVecComps.add(Float.parseFloat(s)));
 
-                    Logger.logD("" + normalVecComps.size());
+                    //Logger.logD("" + normalVecComps.size());
 
                     foundNormals = false;
                 }
@@ -321,26 +337,24 @@ public class DaeLoader
                 {
                     String string = new String(ch, start, length);
 
-                    Logger.logD(string);
+                    //Logger.logD(string);
 
                     String[] splitString = string.split(" ");
 
-                    IntStream.range(0, splitString.length).parallel().forEachOrdered(i ->
-                                                                                     {
-                                                                                         if (i % 2 == 0)
-                                                                                         {
-                                                                                             texCoords.add(Float.parseFloat(
-                                                                                                 splitString[i]));
-                                                                                         }
-                                                                                         else
-                                                                                         {
-                                                                                             texCoords.add(1.0f -
-                                                                                                           Float.parseFloat(
-                                                                                                               splitString[i]));
-                                                                                         }
-                                                                                     });
+                    IntStream.range(0, splitString.length / 2).map(i -> i * 2).parallel().forEachOrdered(i ->
+                                                                                                         {
+                                                                                                             texCoords.add(
+                                                                                                                 Float.parseFloat(
+                                                                                                                     splitString[i]));
+                                                                                                             texCoords.add(
+                                                                                                                 1.0f -
+                                                                                                                 Float.parseFloat(
+                                                                                                                     splitString[
+                                                                                                                         i +
+                                                                                                                         1]));
+                                                                                                         });
 
-                    Logger.logD("" + texCoords.size());
+                    //Logger.logD("" + texCoords.size());
 
                     foundMap = false;
                 }
@@ -348,7 +362,7 @@ public class DaeLoader
                 {
                     String string = new String(ch, start, length);
 
-                    Logger.logD(string);
+                    //Logger.logD(string);
 
                     String[] splitString = string.split(" ");
 
@@ -397,13 +411,7 @@ public class DaeLoader
                                                                                                                       .forEachOrdered(
                                                                                                                           j ->
                                                                                                                           {
-                                                                                                                              Logger
-                                                                                                                                  .logD(
-                                                                                                                                      pi[j] +
-                                                                                                                                      " " +
-                                                                                                                                      ni[j] +
-                                                                                                                                      " " +
-                                                                                                                                      ti[j]);
+                                                                                                                              //Logger.logD(pi[j] + " " + ni[j] + " " + ti[j]);
 
                                                                                                                               if (indices
                                                                                                                                   .contains(
@@ -473,7 +481,6 @@ public class DaeLoader
                                                                                                                           });
                                                                                                          });
 
-                    //Arrays.stream(splitString).parallel().forEachOrdered(s -> indices.add(Integer.parseInt(s)));
                     foundIndices = false;
                 }
                 foundArray = false;
