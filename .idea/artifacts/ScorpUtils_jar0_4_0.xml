@@ -1,12 +1,12 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="ScorpUtils:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/ScorpUtils_jar</output-path>
-    <root id="archive" name="ScorpUtils-0.3.1.jar">
+  <artifact type="jar" build-on-make="true" name="ScorpUtils:jar0.4.0">
+    <output-path>$PROJECT_DIR$/out/artifacts/ScorpUtils_jar0_4_0</output-path>
+    <root id="archive" name="ScorpUtils-0.4.0.jar">
       <element id="module-output" name="ScorpUtils" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>
-      <element id="dir-copy" path="$PROJECT_DIR$/src" />
     </root>
   </artifact>
 </component>

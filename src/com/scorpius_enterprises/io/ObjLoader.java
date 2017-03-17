@@ -267,6 +267,8 @@ public class ObjLoader
 
         numIndices[0] = indices.size();
 
+        Logger.logD("" + numIndices[0]);
+
         if (posCoordArray != null && posCoords.size() > 0)
         {
             posCoordArray[0] = new float[posCoords.size()];
