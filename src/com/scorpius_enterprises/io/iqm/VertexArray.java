@@ -8,4 +8,5 @@ package com.scorpius_enterprises.io.iqm;
  */
 public class VertexArray
 {
+
 }
