@@ -1,11 +1,9 @@
 package com.scorpius_enterprises.io.iqm;
 
 import com.scorpius_enterprises.log.Logger;
-import com.scorpius_enterprises.misc.ArrayUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * Created by rickm on 3/25/2017.
@@ -27,49 +25,30 @@ public class Mesh
 
     }
 
-    public void load(InputStream is)
+    public void load(final Header header, final byte[] buf, final int index)
     {
-        try
-        {
-            byte[] buf = new byte[MESH_SIZE];
-            is.read(buf);
+        int offset = header.getOfs_meshes() + index * MESH_SIZE;
 
-            for (int j = 0; j < MESH_SIZE; j += UNSIGNED_INT_SIZE)
-            {
-                try
-                {
-                    ArrayUtils.reverse(buf, j, UNSIGNED_INT_SIZE);
-                }
-                catch (IndexOutOfBoundsException x)
-                {
-                    x.printStackTrace();
-                }
-            }
+        ByteBuffer bb = ByteBuffer.wrap(buf, offset, MESH_SIZE);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
 
-            ByteBuffer bb = ByteBuffer.wrap(buf);
+        name = bb.getInt();
+        Logger.logD("" + name);
 
-            name = bb.getInt();
-            Logger.logD("" + name);
+        material = bb.getInt();
+        Logger.logD("" + material);
 
-            material = bb.getInt();
-            Logger.logD("" + material);
+        first_vertex = bb.getInt();
+        Logger.logD("" + first_vertex);
 
-            first_vertex = bb.getInt();
-            Logger.logD("" + first_vertex);
+        num_vertexes = bb.getInt();
+        Logger.logD("" + num_vertexes);
 
-            num_vertexes = bb.getInt();
-            Logger.logD("" + num_vertexes);
+        first_triangle = bb.getInt();
+        Logger.logD("" + first_triangle);
 
-            first_triangle = bb.getInt();
-            Logger.logD("" + first_triangle);
-
-            num_triangles = bb.getInt();
-            Logger.logD("" + num_triangles);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        num_triangles = bb.getInt();
+        Logger.logD("" + num_triangles);
     }
 
     public int getName()

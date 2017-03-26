@@ -1,11 +1,11 @@
 package com.scorpius_enterprises.io.iqm;
 
 import com.scorpius_enterprises.log.Logger;
-import com.scorpius_enterprises.misc.ArrayUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * {@link Header com.scorpius_enterprises.io.iqm.Header}
@@ -47,31 +47,23 @@ public class Header
     private int    num_extensions;
     private int    ofs_extensions; // these are stored as a linked list, not as a contiguous array
 
+    private byte[] buf;
+
     public Header()
     {
         magic = new char[16];
+
+        buf = new byte[HEADER_SIZE];
     }
 
-    public void load(InputStream is)
+    public void load(final InputStream is)
     {
         try
         {
-            byte[] buf = new byte[HEADER_SIZE];
             is.read(buf);
 
-            for (int i = 16; i < 124; i += UNSIGNED_INT_SIZE)
-            {
-                try
-                {
-                    ArrayUtils.reverse(buf, i, UNSIGNED_INT_SIZE);
-                }
-                catch (IndexOutOfBoundsException x)
-                {
-                    x.printStackTrace();
-                }
-            }
-
             ByteBuffer bb = ByteBuffer.wrap(buf);
+            bb.order(ByteOrder.LITTLE_ENDIAN);
 
             byte[] magicBuf = new byte[16];
             bb.get(magicBuf);
@@ -307,5 +299,10 @@ public class Header
     public int getOfs_extensions()
     {
         return ofs_extensions;
+    }
+
+    public byte[] getBuf()
+    {
+        return buf;
     }
 }
