@@ -108,9 +108,13 @@ public class IqmLoader
                         for (int k = 0; k < VertexArray.NUM_POSITION_COMPONENTS; ++k)
                         {
                             position[k] = bb.getFloat();
-                            iPosCoordArray[posCoordArrayIndex++] = position[k];
                         }
                         vertex.setPosition(position);
+
+                        iPosCoordArray[posCoordArrayIndex++] = position[0];
+                        iPosCoordArray[posCoordArrayIndex++] = position[2];
+                        iPosCoordArray[posCoordArrayIndex++] = -position[1];
+
                         break;
                     case VertexArray.TYPE_IQM_TEXCOORD:
                         float[] texcoord = new float[VertexArray.NUM_TEXCOORD_COMPONENTS];
@@ -142,9 +146,13 @@ public class IqmLoader
                         for (int k = 0; k < VertexArray.NUM_NORMAL_COMPONENTS; ++k)
                         {
                             normal[k] = bb.getFloat();
-                            iNormalVecCompArray[normalVecCompArrayIndex++] = normal[k];
                         }
                         vertex.setNormal(normal);
+
+                        iNormalVecCompArray[normalVecCompArrayIndex++] = normal[0];
+                        iNormalVecCompArray[normalVecCompArrayIndex++] = normal[2];
+                        iNormalVecCompArray[normalVecCompArrayIndex++] = -normal[1];
+
                         break;
                     case VertexArray.TYPE_IQM_TANGENT:
                         float[] tangent = new float[VertexArray.NUM_TANGENT_COMPONENTS];
@@ -250,7 +258,8 @@ public class IqmLoader
 
         if (numIndices != null)
         {
-            numIndices[0] = header.getNum_vertexes();
+            numIndices[0] = header.getNum_triangles() * 3;
+            Logger.logI("" + numIndices[0]);
         }
         if (posCoordArray != null)
         {
