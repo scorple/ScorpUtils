@@ -42,6 +42,7 @@ public class IqmLoader
         VertexArray[] vertexArrays;
         Triangle[]    triangles;
         Mesh[]        meshes;
+        Pose[]        poses;
 
         InputStream is = IqmLoader.class.getClass().getResourceAsStream(fileName);
 
@@ -223,6 +224,22 @@ public class IqmLoader
                 sbn.append(" ").append(j);
             }
             Logger.logD(sbn.toString());
+
+            StringBuilder sbbi = new StringBuilder();
+            sbbi.append("vbi");
+            for (byte j : vertex.getBlendindices())
+            {
+                sbbi.append(" ").append(j);
+            }
+            Logger.logD(sbbi.toString());
+
+            StringBuilder sbbw = new StringBuilder();
+            sbbw.append("vbw");
+            for (byte j : vertex.getBlendweights())
+            {
+                sbbw.append(" ").append(j);
+            }
+            Logger.logD(sbbw.toString());
         }
 
         triangles = new Triangle[header.getNum_triangles()];
@@ -254,6 +271,17 @@ public class IqmLoader
             mesh.load(header, buf, i);
 
             meshes[i] = mesh;
+        }
+
+        poses = new Pose[header.getNum_poses()];
+
+        for (int i = 0; i < header.getNum_poses(); ++i)
+        {
+            Pose pose = new Pose();
+
+            pose.load(header, buf, i);
+
+            poses[i] = pose;
         }
 
         if (numIndices != null)
