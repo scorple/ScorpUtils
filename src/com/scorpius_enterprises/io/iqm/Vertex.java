@@ -9,22 +9,22 @@ package com.scorpius_enterprises.io.iqm;
 public class Vertex
 {
     private float[] position;
-    private float[] texcoord;
+    private float[] texCoord;
     private float[] normal;
     private float[] tangent;
-    private byte[]  blendindices;
-    private byte[]  blendweights;
+    private byte[]  blendIndices;
+    private byte[]  blendWeights;
     private byte[]  color;
 
     public Vertex()
     {
-        position = new float[3];
-        texcoord = new float[2];
-        normal = new float[3];
-        tangent = new float[4];
-        blendindices = new byte[4];
-        blendweights = new byte[4];
-        color = new byte[4];
+        position = new float[VertexArray.NUM_POSITION_COMPONENTS];
+        texCoord = new float[VertexArray.NUM_TEXCOORD_COMPONENTS];
+        normal = new float[VertexArray.NUM_NORMAL_COMPONENTS];
+        tangent = new float[VertexArray.NUM_TANGENT_COMPONENTS];
+        blendIndices = new byte[VertexArray.NUM_BLENDINDICES_COMPONENTS];
+        blendWeights = new byte[VertexArray.NUM_BLENDWEIGHTS_COMPONENTS];
+        color = new byte[VertexArray.NUM_COLOR_COMPONENTS];
     }
 
     public void setPosition(final float[] position)
@@ -32,9 +32,9 @@ public class Vertex
         System.arraycopy(position, 0, this.position, 0, this.position.length);
     }
 
-    public void setTexcoord(final float[] texcoord)
+    public void setTexCoord(final float[] texCoord)
     {
-        System.arraycopy(texcoord, 0, this.texcoord, 0, this.texcoord.length);
+        System.arraycopy(texCoord, 0, this.texCoord, 0, this.texCoord.length);
     }
 
     public void setNormal(final float[] normal)
@@ -47,14 +47,14 @@ public class Vertex
         System.arraycopy(tangent, 0, this.tangent, 0, this.tangent.length);
     }
 
-    public void setBlendindices(final byte[] blendindices)
+    public void setBlendIndices(final byte[] blendIndices)
     {
-        System.arraycopy(blendindices, 0, this.blendindices, 0, this.blendindices.length);
+        System.arraycopy(blendIndices, 0, this.blendIndices, 0, this.blendIndices.length);
     }
 
-    public void setBlendweights(final byte[] blendweights)
+    public void setBlendWeights(final byte[] blendWeights)
     {
-        System.arraycopy(blendweights, 0, this.blendweights, 0, this.blendweights.length);
+        System.arraycopy(blendWeights, 0, this.blendWeights, 0, this.blendWeights.length);
     }
 
     public void setColor(final byte[] color)
@@ -67,9 +67,9 @@ public class Vertex
         return position;
     }
 
-    public float[] getTexcoord()
+    public float[] getTexCoord()
     {
-        return texcoord;
+        return texCoord;
     }
 
     public float[] getNormal()
@@ -82,14 +82,14 @@ public class Vertex
         return tangent;
     }
 
-    public byte[] getBlendindices()
+    public byte[] getBlendIndices()
     {
-        return blendindices;
+        return blendIndices;
     }
 
-    public byte[] getBlendweights()
+    public byte[] getBlendWeights()
     {
-        return blendweights;
+        return blendWeights;
     }
 
     public byte[] getColor()

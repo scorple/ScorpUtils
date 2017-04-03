@@ -13,22 +13,23 @@ import java.nio.ByteOrder;
  */
 public class Pose
 {
-    public static final int POSE_SIZE = 88;
+    public static final int POSE_SIZE    = 88;
+    public static final int NUM_CHANNELS = 10;
 
     private int     parent;
-    private int     channelmask;
-    private float[] channeloffset;
-    private float[] channelscale;
+    private int     channelMask;
+    private float[] channelOffset;
+    private float[] channelScale;
 
     public Pose()
     {
-        channeloffset = new float[10];
-        channelscale = new float[10];
+        channelOffset = new float[NUM_CHANNELS];
+        channelScale = new float[NUM_CHANNELS];
     }
 
     public void load(final Header header, final byte[] buf, final int index)
     {
-        int offset = header.getOfs_poses() + index * POSE_SIZE;
+        int offset = header.getOfsPoses() + index * POSE_SIZE;
 
         ByteBuffer bb = ByteBuffer.wrap(buf, offset, POSE_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
@@ -36,24 +37,24 @@ public class Pose
         parent = bb.getInt();
         Logger.logD("" + parent);
 
-        channelmask = bb.getInt();
-        Logger.logD("" + channelmask);
+        channelMask = bb.getInt();
+        Logger.logD("" + channelMask);
 
         StringBuilder sbo = new StringBuilder();
         sbo.append("co");
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < NUM_CHANNELS; ++i)
         {
-            channeloffset[i] = bb.getFloat();
-            sbo.append(" ").append(channeloffset[i]);
+            channelOffset[i] = bb.getFloat();
+            sbo.append(" ").append(channelOffset[i]);
         }
         Logger.logD(sbo.toString());
 
         StringBuilder sbs = new StringBuilder();
         sbs.append("cs");
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < NUM_CHANNELS; ++i)
         {
-            channelscale[i] = bb.getFloat();
-            sbs.append(" ").append(channelscale[i]);
+            channelScale[i] = bb.getFloat();
+            sbs.append(" ").append(channelScale[i]);
         }
         Logger.logD(sbs.toString());
     }

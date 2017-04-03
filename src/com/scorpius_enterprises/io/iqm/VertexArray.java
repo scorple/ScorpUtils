@@ -26,7 +26,7 @@ public class VertexArray
     public static final int TYPE_IQM_TANGENT            = 3; // float, 4
     public static final int NUM_TANGENT_COMPONENTS      = 4;
     public static final int TYPE_IQM_BLENDINDEXES       = 4; // ubyte, 4
-    public static final int NUM_BLENDINDEXES_COMPONENTS = 4;
+    public static final int NUM_BLENDINDICES_COMPONENTS = 4;
     public static final int TYPE_IQM_BLENDWEIGHTS       = 5; // ubyte, 4
     public static final int NUM_BLENDWEIGHTS_COMPONENTS = 4;
     public static final int TYPE_IQM_COLOR              = 6; // ubyte, 4
@@ -58,7 +58,7 @@ public class VertexArray
 
     public void load(final Header header, final byte[] buf, final int index, final int num_vertexes)
     {
-        int offset = header.getOfs_vertexarrays() + index * VERTEX_ARRAY_SIZE;
+        int offset = header.getOfsVertexArrays() + index * VERTEX_ARRAY_SIZE;
 
         ByteBuffer bb = ByteBuffer.wrap(buf, offset, VERTEX_ARRAY_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
@@ -97,7 +97,7 @@ public class VertexArray
                 System.arraycopy(buf, offset, this.buf, 0, this.buf.length);
                 break;
             case TYPE_IQM_BLENDINDEXES:
-                this.buf = new byte[num_vertexes * NUM_BLENDINDEXES_COMPONENTS];
+                this.buf = new byte[num_vertexes * NUM_BLENDINDICES_COMPONENTS];
                 System.arraycopy(buf, offset, this.buf, 0, this.buf.length);
                 break;
             case TYPE_IQM_BLENDWEIGHTS:

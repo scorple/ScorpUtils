@@ -16,42 +16,43 @@ import java.nio.ByteOrder;
 public class Header
 {
     public static final int HEADER_SIZE       = 124;
+    public static final int MAGIC_SIZE        = 16;
     public static final int UNSIGNED_INT_SIZE = 4;
 
     private char[] magic;
     private int    version; // must be version 2
-    private int    filesize;
+    private int    fileSize;
     private int    flags;
-    private int    num_text;
-    private int    ofs_text;
-    private int    num_meshes;
-    private int    ofs_meshes;
-    private int    num_vertexarrays;
-    private int    num_vertexes;
-    private int    ofs_vertexarrays;
-    private int    num_triangles;
-    private int    ofs_triangles;
-    private int    ofs_adjacency;
-    private int    num_joints;
-    private int    ofs_joints;
-    private int    num_poses;
-    private int    ofs_poses;
-    private int    num_anims;
-    private int    ofs_anims;
-    private int    num_frames;
-    private int    num_framechannels;
-    private int    ofs_frames;
-    private int    ofs_bounds;
-    private int    num_comment;
-    private int    ofs_comment;
-    private int    num_extensions;
-    private int    ofs_extensions; // these are stored as a linked list, not as a contiguous array
+    private int    numText;
+    private int    ofsText;
+    private int    numMeshes;
+    private int    ofsMeshes;
+    private int    numVertexArrays;
+    private int    numVertices;
+    private int    ofsVertexArrays;
+    private int    numTriangles;
+    private int    ofsTriangles;
+    private int    ofsAdjacency;
+    private int    numJoints;
+    private int    ofsJoints;
+    private int    numPoses;
+    private int    ofsPoses;
+    private int    numAnims;
+    private int    ofsAnims;
+    private int    numFrames;
+    private int    numFrameChannels;
+    private int    ofsFrames;
+    private int    ofsBounds;
+    private int    numComment;
+    private int    ofsComment;
+    private int    numExtensions;
+    private int    ofsExtensions; // these are stored as a linked list, not as a contiguous array
 
     private byte[] buf;
 
     public Header()
     {
-        magic = new char[16];
+        magic = new char[MAGIC_SIZE];
 
         buf = new byte[HEADER_SIZE];
     }
@@ -65,12 +66,12 @@ public class Header
             ByteBuffer bb = ByteBuffer.wrap(buf);
             bb.order(ByteOrder.LITTLE_ENDIAN);
 
-            byte[] magicBuf = new byte[16];
+            byte[] magicBuf = new byte[MAGIC_SIZE];
             bb.get(magicBuf);
             String s  = new String(magicBuf);
             char[] ca = s.toCharArray();
 
-            for (int i = 0; i < 16; ++i)
+            for (int i = 0; i < MAGIC_SIZE; ++i)
             {
                 try
                 {
@@ -87,83 +88,83 @@ public class Header
             version = bb.getInt();
             Logger.logD("" + version);
 
-            filesize = bb.getInt();
-            Logger.logD("" + filesize);
+            fileSize = bb.getInt();
+            Logger.logD("" + fileSize);
 
             flags = bb.getInt();
             Logger.logD("" + flags);
 
-            num_text = bb.getInt();
-            Logger.logD("" + num_text);
+            numText = bb.getInt();
+            Logger.logD("" + numText);
 
-            ofs_text = bb.getInt();
-            Logger.logD("" + ofs_text);
+            ofsText = bb.getInt();
+            Logger.logD("" + ofsText);
 
-            num_meshes = bb.getInt();
-            Logger.logD("" + num_meshes);
+            numMeshes = bb.getInt();
+            Logger.logD("" + numMeshes);
 
-            ofs_meshes = bb.getInt();
-            Logger.logD("" + ofs_meshes);
+            ofsMeshes = bb.getInt();
+            Logger.logD("" + ofsMeshes);
 
-            num_vertexarrays = bb.getInt();
-            Logger.logD("" + num_vertexarrays);
+            numVertexArrays = bb.getInt();
+            Logger.logD("" + numVertexArrays);
 
-            num_vertexes = bb.getInt();
-            Logger.logD("" + num_vertexes);
+            numVertices = bb.getInt();
+            Logger.logD("" + numVertices);
 
-            ofs_vertexarrays = bb.getInt();
-            Logger.logD("" + ofs_vertexarrays);
+            ofsVertexArrays = bb.getInt();
+            Logger.logD("" + ofsVertexArrays);
 
-            num_triangles = bb.getInt();
-            Logger.logD("" + num_triangles);
+            numTriangles = bb.getInt();
+            Logger.logD("" + numTriangles);
 
-            ofs_triangles = bb.getInt();
-            Logger.logD("" + ofs_triangles);
+            ofsTriangles = bb.getInt();
+            Logger.logD("" + ofsTriangles);
 
-            ofs_adjacency = bb.getInt();
-            Logger.logD("" + ofs_adjacency);
+            ofsAdjacency = bb.getInt();
+            Logger.logD("" + ofsAdjacency);
 
-            num_joints = bb.getInt();
-            Logger.logD("" + num_joints);
+            numJoints = bb.getInt();
+            Logger.logD("" + numJoints);
 
-            ofs_joints = bb.getInt();
-            Logger.logD("" + ofs_joints);
+            ofsJoints = bb.getInt();
+            Logger.logD("" + ofsJoints);
 
-            num_poses = bb.getInt();
-            Logger.logD("" + num_poses);
+            numPoses = bb.getInt();
+            Logger.logD("" + numPoses);
 
-            ofs_poses = bb.getInt();
-            Logger.logD("" + ofs_poses);
+            ofsPoses = bb.getInt();
+            Logger.logD("" + ofsPoses);
 
-            num_anims = bb.getInt();
-            Logger.logD("" + num_anims);
+            numAnims = bb.getInt();
+            Logger.logD("" + numAnims);
 
-            ofs_anims = bb.getInt();
-            Logger.logD("" + ofs_anims);
+            ofsAnims = bb.getInt();
+            Logger.logD("" + ofsAnims);
 
-            num_frames = bb.getInt();
-            Logger.logD("" + num_frames);
+            numFrames = bb.getInt();
+            Logger.logD("" + numFrames);
 
-            num_framechannels = bb.getInt();
-            Logger.logD("" + num_framechannels);
+            numFrameChannels = bb.getInt();
+            Logger.logD("" + numFrameChannels);
 
-            ofs_frames = bb.getInt();
-            Logger.logD("" + ofs_frames);
+            ofsFrames = bb.getInt();
+            Logger.logD("" + ofsFrames);
 
-            ofs_bounds = bb.getInt();
-            Logger.logD("" + ofs_bounds);
+            ofsBounds = bb.getInt();
+            Logger.logD("" + ofsBounds);
 
-            num_comment = bb.getInt();
-            Logger.logD("" + num_comment);
+            numComment = bb.getInt();
+            Logger.logD("" + numComment);
 
-            ofs_comment = bb.getInt();
-            Logger.logD("" + ofs_comment);
+            ofsComment = bb.getInt();
+            Logger.logD("" + ofsComment);
 
-            num_extensions = bb.getInt();
-            Logger.logD("" + num_extensions);
+            numExtensions = bb.getInt();
+            Logger.logD("" + numExtensions);
 
-            ofs_extensions = bb.getInt();
-            Logger.logD("" + ofs_extensions);
+            ofsExtensions = bb.getInt();
+            Logger.logD("" + ofsExtensions);
         }
         catch (IOException e)
         {
@@ -171,9 +172,9 @@ public class Header
         }
     }
 
-    public int getFilesize()
+    public int getFileSize()
     {
-        return filesize;
+        return fileSize;
     }
 
     public int getFlags()
@@ -181,124 +182,124 @@ public class Header
         return flags;
     }
 
-    public int getNum_text()
+    public int getNumText()
     {
-        return num_text;
+        return numText;
     }
 
-    public int getOfs_text()
+    public int getOfsText()
     {
-        return ofs_text;
+        return ofsText;
     }
 
-    public int getNum_meshes()
+    public int getNumMeshes()
     {
-        return num_meshes;
+        return numMeshes;
     }
 
-    public int getOfs_meshes()
+    public int getOfsMeshes()
     {
-        return ofs_meshes;
+        return ofsMeshes;
     }
 
-    public int getNum_vertexarrays()
+    public int getNumVertexArrays()
     {
-        return num_vertexarrays;
+        return numVertexArrays;
     }
 
-    public int getNum_vertexes()
+    public int getNumVertices()
     {
-        return num_vertexes;
+        return numVertices;
     }
 
-    public int getOfs_vertexarrays()
+    public int getOfsVertexArrays()
     {
-        return ofs_vertexarrays;
+        return ofsVertexArrays;
     }
 
-    public int getNum_triangles()
+    public int getNumTriangles()
     {
-        return num_triangles;
+        return numTriangles;
     }
 
-    public int getOfs_triangles()
+    public int getOfsTriangles()
     {
-        return ofs_triangles;
+        return ofsTriangles;
     }
 
-    public int getOfs_adjacency()
+    public int getOfsAdjacency()
     {
-        return ofs_adjacency;
+        return ofsAdjacency;
     }
 
-    public int getNum_joints()
+    public int getNumJoints()
     {
-        return num_joints;
+        return numJoints;
     }
 
-    public int getOfs_joints()
+    public int getOfsJoints()
     {
-        return ofs_joints;
+        return ofsJoints;
     }
 
-    public int getNum_poses()
+    public int getNumPoses()
     {
-        return num_poses;
+        return numPoses;
     }
 
-    public int getOfs_poses()
+    public int getOfsPoses()
     {
-        return ofs_poses;
+        return ofsPoses;
     }
 
-    public int getNum_anims()
+    public int getNumAnims()
     {
-        return num_anims;
+        return numAnims;
     }
 
-    public int getOfs_anims()
+    public int getOfsAnims()
     {
-        return ofs_anims;
+        return ofsAnims;
     }
 
-    public int getNum_frames()
+    public int getNumFrames()
     {
-        return num_frames;
+        return numFrames;
     }
 
-    public int getNum_framechannels()
+    public int getNumFrameChannels()
     {
-        return num_framechannels;
+        return numFrameChannels;
     }
 
-    public int getOfs_frames()
+    public int getOfsFrames()
     {
-        return ofs_frames;
+        return ofsFrames;
     }
 
-    public int getOfs_bounds()
+    public int getOfsBounds()
     {
-        return ofs_bounds;
+        return ofsBounds;
     }
 
-    public int getNum_comment()
+    public int getNumComment()
     {
-        return num_comment;
+        return numComment;
     }
 
-    public int getOfs_comment()
+    public int getOfsComment()
     {
-        return ofs_comment;
+        return ofsComment;
     }
 
-    public int getNum_extensions()
+    public int getNumExtensions()
     {
-        return num_extensions;
+        return numExtensions;
     }
 
-    public int getOfs_extensions()
+    public int getOfsExtensions()
     {
-        return ofs_extensions;
+        return ofsExtensions;
     }
 
     public byte[] getBuf()

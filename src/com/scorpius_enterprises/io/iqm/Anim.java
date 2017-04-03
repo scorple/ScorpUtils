@@ -16,14 +16,16 @@ public class Anim
     public static final int ANIM_SIZE = 20;
 
     private int   name;
-    private int   first_frame;
-    private int   num_frames;
-    private float framerate;
+    private int   firstFrame;
+    private int   numFrames;
+    private float frameRate;
     private int   flags;
+
+    private String nameString;
 
     public void load(final Header header, final byte[] buf, final int index)
     {
-        int offset = header.getOfs_anims() + index * ANIM_SIZE;
+        int offset = header.getOfsAnims() + index * ANIM_SIZE;
 
         ByteBuffer bb = ByteBuffer.wrap(buf, offset, ANIM_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
@@ -31,16 +33,61 @@ public class Anim
         name = bb.getInt();
         Logger.logD("" + name);
 
-        first_frame = bb.getInt();
-        Logger.logD("" + first_frame);
+        firstFrame = bb.getInt();
+        Logger.logD("" + firstFrame);
 
-        num_frames = bb.getInt();
-        Logger.logD("" + num_frames);
+        numFrames = bb.getInt();
+        Logger.logD("" + numFrames);
 
-        framerate = bb.getFloat();
-        Logger.logD("" + framerate);
+        frameRate = bb.getFloat();
+        Logger.logD("" + frameRate);
 
         flags = bb.getInt();
         Logger.logD("" + flags);
+
+        bb = ByteBuffer.wrap(buf);
+        bb.position(header.getOfsText() + name);
+
+        StringBuilder sb = new StringBuilder();
+        byte[]        b  = new byte[1];
+        String        s;
+        while ((b[0] = bb.get()) != '\0')
+        {
+            s = new String(b);
+            sb.append(s);
+        }
+
+        nameString = sb.toString();
+        Logger.logD(nameString);
+    }
+
+    public int getName()
+    {
+        return name;
+    }
+
+    public int getFirstFrame()
+    {
+        return firstFrame;
+    }
+
+    public int getNumFrames()
+    {
+        return numFrames;
+    }
+
+    public float getFrameRate()
+    {
+        return frameRate;
+    }
+
+    public int getFlags()
+    {
+        return flags;
+    }
+
+    public String getNameString()
+    {
+        return nameString;
     }
 }

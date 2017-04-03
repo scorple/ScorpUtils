@@ -13,7 +13,10 @@ import java.nio.ByteOrder;
  */
 public class Joint
 {
-    public static final int JOINT_SIZE = 48;
+    public static final int JOINT_SIZE         = 48;
+    public static final int TRANSLATE_CHANNELS = 3;
+    public static final int ROTATE_CHANNELS    = 4;
+    public static final int SCALE_CHANNELS     = 3;
 
     private int   name;
     private int   parent;
@@ -21,16 +24,18 @@ public class Joint
     private float rotate[];
     private float scale[];
 
+    private String nameString;
+
     public Joint()
     {
-        translate = new float[3];
-        rotate = new float[4];
-        scale = new float[3];
+        translate = new float[TRANSLATE_CHANNELS];
+        rotate = new float[ROTATE_CHANNELS];
+        scale = new float[SCALE_CHANNELS];
     }
 
     public void load(final Header header, final byte[] buf, final int index)
     {
-        int offset = header.getOfs_joints() + index * JOINT_SIZE;
+        int offset = header.getOfsJoints() + index * JOINT_SIZE;
 
         ByteBuffer bb = ByteBuffer.wrap(buf, offset, JOINT_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
@@ -43,7 +48,7 @@ public class Joint
 
         StringBuilder sbt = new StringBuilder();
         sbt.append("jt");
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < TRANSLATE_CHANNELS; ++i)
         {
             translate[i] = bb.getFloat();
             sbt.append(" ").append(translate[i]);
@@ -52,7 +57,7 @@ public class Joint
 
         StringBuilder sbr = new StringBuilder();
         sbt.append("jr");
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < ROTATE_CHANNELS; ++i)
         {
             rotate[i] = bb.getFloat();
             sbr.append(" ").append(rotate[i]);
@@ -61,11 +66,56 @@ public class Joint
 
         StringBuilder sbs = new StringBuilder();
         sbt.append("js");
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < SCALE_CHANNELS; ++i)
         {
             scale[i] = bb.getFloat();
             sbs.append(" ").append(scale[i]);
         }
         Logger.logD(sbs.toString());
+
+        bb = ByteBuffer.wrap(buf);
+        bb.position(header.getOfsText() + name);
+
+        StringBuilder sb = new StringBuilder();
+        byte[]        b  = new byte[1];
+        String        s;
+        while ((b[0] = bb.get()) != '\0')
+        {
+            s = new String(b);
+            sb.append(s);
+        }
+
+        nameString = sb.toString();
+        Logger.logD(nameString);
+    }
+
+    public int getName()
+    {
+        return name;
+    }
+
+    public int getParent()
+    {
+        return parent;
+    }
+
+    public float[] getTranslate()
+    {
+        return translate;
+    }
+
+    public float[] getRotate()
+    {
+        return rotate;
+    }
+
+    public float[] getScale()
+    {
+        return scale;
+    }
+
+    public String getNameString()
+    {
+        return nameString;
     }
 }

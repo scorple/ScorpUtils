@@ -13,28 +13,28 @@ public class Triangle
 {
     public static final int TRIANGLE_SIZE = 12;
 
-    private int[] vertexes;
+    private int[] vertices;
 
     public Triangle()
     {
-        vertexes = new int[3];
+        vertices = new int[3];
     }
 
     public void load(final Header header, final byte[] buf, final int index)
     {
-        int offset = header.getOfs_triangles() + index * TRIANGLE_SIZE;
+        int offset = header.getOfsTriangles() + index * TRIANGLE_SIZE;
 
         ByteBuffer bb = ByteBuffer.wrap(buf, offset, TRIANGLE_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
-        for (int i = 0; i < vertexes.length; ++i)
+        for (int i = 0; i < vertices.length; ++i)
         {
-            vertexes[i] = bb.getInt();
+            vertices[i] = bb.getInt();
         }
     }
 
-    public int[] getVertexes()
+    public int[] getVertices()
     {
-        return vertexes;
+        return vertices;
     }
 }

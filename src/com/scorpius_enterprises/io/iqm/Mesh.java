@@ -15,10 +15,13 @@ public class Mesh
 
     private int name; // unique name for the mesh, if desired
     private int material; // set to a name of a non-unique material or texture
-    private int first_vertex;
-    private int num_vertexes;
-    private int first_triangle;
-    private int num_triangles;
+    private int firstVertex;
+    private int numVertices;
+    private int firstTriangle;
+    private int numTriangles;
+
+    private String nameString;
+    private String materialString;
 
     public Mesh()
     {
@@ -27,7 +30,7 @@ public class Mesh
 
     public void load(final Header header, final byte[] buf, final int index)
     {
-        int offset = header.getOfs_meshes() + index * MESH_SIZE;
+        int offset = header.getOfsMeshes() + index * MESH_SIZE;
 
         ByteBuffer bb = ByteBuffer.wrap(buf, offset, MESH_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
@@ -38,17 +41,44 @@ public class Mesh
         material = bb.getInt();
         Logger.logD("" + material);
 
-        first_vertex = bb.getInt();
-        Logger.logD("" + first_vertex);
+        firstVertex = bb.getInt();
+        Logger.logD("" + firstVertex);
 
-        num_vertexes = bb.getInt();
-        Logger.logD("" + num_vertexes);
+        numVertices = bb.getInt();
+        Logger.logD("" + numVertices);
 
-        first_triangle = bb.getInt();
-        Logger.logD("" + first_triangle);
+        firstTriangle = bb.getInt();
+        Logger.logD("" + firstTriangle);
 
-        num_triangles = bb.getInt();
-        Logger.logD("" + num_triangles);
+        numTriangles = bb.getInt();
+        Logger.logD("" + numTriangles);
+
+        bb = ByteBuffer.wrap(buf);
+        bb.position(header.getOfsText() + name);
+
+        StringBuilder sb = new StringBuilder();
+        byte[]        b  = new byte[1];
+        String        s;
+        while ((b[0] = bb.get()) != '\0')
+        {
+            s = new String(b);
+            sb.append(s);
+        }
+
+        nameString = sb.toString();
+        Logger.logD(nameString);
+
+        bb.position(header.getOfsText() + material);
+
+        sb = new StringBuilder();
+        while ((b[0] = bb.get()) != '\0')
+        {
+            s = new String(b);
+            sb.append(s);
+        }
+
+        materialString = sb.toString();
+        Logger.logD(materialString);
     }
 
     public int getName()
@@ -61,23 +91,33 @@ public class Mesh
         return material;
     }
 
-    public int getFirst_vertex()
+    public int getFirstVertex()
     {
-        return first_vertex;
+        return firstVertex;
     }
 
-    public int getNum_vertexes()
+    public int getNumVertices()
     {
-        return num_vertexes;
+        return numVertices;
     }
 
-    public int getFirst_triangle()
+    public int getFirstTriangle()
     {
-        return first_triangle;
+        return firstTriangle;
     }
 
-    public int getNum_triangles()
+    public int getNumTriangles()
     {
-        return num_triangles;
+        return numTriangles;
+    }
+
+    public String getNameString()
+    {
+        return nameString;
+    }
+
+    public String getMaterialString()
+    {
+        return materialString;
     }
 }
