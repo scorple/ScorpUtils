@@ -42,7 +42,10 @@ public class IqmLoader
         VertexArray[] vertexArrays;
         Triangle[]    triangles;
         Mesh[]        meshes;
+        Joint[]       joints;
         Pose[]        poses;
+        short[]       frames;
+        Anim[]        anims;
 
         InputStream is = IqmLoader.class.getClass().getResourceAsStream(fileName);
 
@@ -229,7 +232,7 @@ public class IqmLoader
             sbbi.append("vbi");
             for (byte j : vertex.getBlendindices())
             {
-                sbbi.append(" ").append(j);
+                sbbi.append(" ").append(String.format("%02x", j));
             }
             Logger.logD(sbbi.toString());
 
@@ -237,7 +240,7 @@ public class IqmLoader
             sbbw.append("vbw");
             for (byte j : vertex.getBlendweights())
             {
-                sbbw.append(" ").append(j);
+                sbbw.append(" ").append(String.format("%02x", j));
             }
             Logger.logD(sbbw.toString());
         }
@@ -273,6 +276,17 @@ public class IqmLoader
             meshes[i] = mesh;
         }
 
+        joints = new Joint[header.getNum_joints()];
+
+        for (int i = 0; i < header.getNum_joints(); ++i)
+        {
+            Joint joint = new Joint();
+
+            joint.load(header, buf, i);
+
+            joints[i] = joint;
+        }
+
         poses = new Pose[header.getNum_poses()];
 
         for (int i = 0; i < header.getNum_poses(); ++i)
@@ -282,6 +296,29 @@ public class IqmLoader
             pose.load(header, buf, i);
 
             poses[i] = pose;
+        }
+
+        frames = new short[header.getNum_frames() * header.getNum_framechannels()];
+
+        ByteBuffer bb =
+            ByteBuffer.wrap(buf, header.getOfs_frames(), header.getNum_frames() * header.getNum_framechannels() * 2);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+
+        for (int i = 0; i < header.getNum_frames() * header.getNum_framechannels(); ++i)
+        {
+            frames[i] = bb.getShort();
+            Logger.logD("" + frames[i]);
+        }
+
+        anims = new Anim[header.getNum_anims()];
+
+        for (int i = 0; i < header.getNum_anims(); ++i)
+        {
+            Anim anim = new Anim();
+
+            anim.load(header, buf, i);
+
+            anims[i] = anim;
         }
 
         if (numIndices != null)
