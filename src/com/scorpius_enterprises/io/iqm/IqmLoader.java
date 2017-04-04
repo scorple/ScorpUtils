@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.LinkedList;
 
 /**
  * {@link IqmLoader com.scorpius_enterprises.io.iqm.IqmLoader}
@@ -23,11 +22,6 @@ public class IqmLoader
                                final float[][] normalVecCompArray,
                                final int[][] vertexIndexArray)
     {
-        LinkedList<Float>   posCoordList      = new LinkedList<>();
-        LinkedList<Float>   texCoordList      = new LinkedList<>();
-        LinkedList<Float>   normalVecCompList = new LinkedList<>();
-        LinkedList<Integer> vertexIndexList   = new LinkedList<>();
-
         float[] iPosCoordArray;
         int     posCoordArrayIndex      = 0;
         float[] iTexCoordArray;

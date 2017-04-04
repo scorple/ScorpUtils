@@ -56,7 +56,7 @@ public class Joint
         Logger.logD(sbt.toString());
 
         StringBuilder sbr = new StringBuilder();
-        sbt.append("jr");
+        sbr.append("jr");
         for (int i = 0; i < ROTATE_CHANNELS; ++i)
         {
             rotate[i] = bb.getFloat();
@@ -65,7 +65,7 @@ public class Joint
         Logger.logD(sbr.toString());
 
         StringBuilder sbs = new StringBuilder();
-        sbt.append("js");
+        sbs.append("js");
         for (int i = 0; i < SCALE_CHANNELS; ++i)
         {
             scale[i] = bb.getFloat();
