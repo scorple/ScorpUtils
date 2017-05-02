@@ -11,7 +11,6 @@ import java.net.ServerSocket;
  */
 public class Server extends Dialog
 {
-
     public Server()
     {
         ServerConnectionThread serverConnectionThread = new ServerConnectionThread();

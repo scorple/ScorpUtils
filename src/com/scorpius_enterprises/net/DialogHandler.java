@@ -15,7 +15,6 @@ public class DialogHandler extends Thread
     private boolean ready;
 
     private boolean running = false;
-    private boolean closing = false;
 
     public DialogHandler(Dialog dialog)
     {
@@ -49,8 +48,8 @@ public class DialogHandler extends Thread
                 if (ready)
                 {
                     notifyListener("Connection lost");
-                    ready = false;
                 }
+                ready = false;
             }
         }
     }
@@ -60,7 +59,7 @@ public class DialogHandler extends Thread
         this.listener = listener;
     }
 
-    public void notifyListener(String msg)
+    private void notifyListener(String msg)
     {
         if (listener != null)
         {
@@ -75,7 +74,6 @@ public class DialogHandler extends Thread
 
     public void close()
     {
-        closing = true;
         dialog.close();
         dialog = null;
     }

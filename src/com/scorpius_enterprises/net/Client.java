@@ -21,7 +21,7 @@ public class Client extends Dialog
     {
         private String serverAddress;
 
-        public ClientConnectionThread(String serverAddress)
+        ClientConnectionThread(String serverAddress)
         {
             this.serverAddress = serverAddress;
         }
