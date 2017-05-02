@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="ScorpUtils:jar0.5.0">
-    <output-path>$PROJECT_DIR$/out/artifacts/ScorpUtils_jar0_5_0</output-path>
-    <root id="archive" name="ScorpUtils-0.5.0.jar">
+  <artifact type="jar" build-on-make="true" name="ScorpUtils:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ScorpUtils_jar</output-path>
+    <root id="archive" name="ScorpUtils.jar">
       <element id="module-output" name="ScorpUtils" />
       <element id="dir-copy" path="$PROJECT_DIR$/src" />
       <element id="directory" name="META-INF">
