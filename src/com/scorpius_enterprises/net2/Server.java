@@ -39,6 +39,10 @@ public class Server extends Dialog
             catch (IOException e)
             {
                 e.printStackTrace();
+
+                error("error connecting to client");
+
+                close();
             }
         }
     }

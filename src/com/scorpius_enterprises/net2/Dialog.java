@@ -9,7 +9,7 @@ import java.net.Socket;
  * @author Scorple
  * @since 2017-05-02
  */
-class Dialog implements IDialog
+abstract class Dialog implements IDialog
 {
     private boolean open;
     private boolean closed = false;
