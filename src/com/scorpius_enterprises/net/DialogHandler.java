@@ -1,5 +1,7 @@
 package com.scorpius_enterprises.net;
 
+import com.scorpius_enterprises.log.Logger;
+
 /**
  * {@link DialogHandler networking.DialogHandler}
  *
@@ -30,16 +32,24 @@ public class DialogHandler extends Thread
         {
             if (dialog != null && dialog.isReady())
             {
+                Logger.logD("dialog ready");
+
                 if (!ready)
                 {
+                    Logger.logD("new connection, notifying listener");
+
                     notifyListener("Connection established");
                     ready = true;
                 }
+
+                Logger.logD("attempting read");
 
                 String msg = dialog.read();
 
                 if (msg != null)
                 {
+                    Logger.logD("read non-null message, notifying listener");
+
                     notifyListener(msg);
                 }
             }
@@ -61,10 +71,16 @@ public class DialogHandler extends Thread
 
     private void notifyListener(String msg)
     {
+        Logger.logD("enter trace");
+
         if (listener != null)
         {
+            Logger.logD("listener non-null");
+
             listener.newMessage(msg);
         }
+
+        Logger.logD("exit trace");
     }
 
     public void write(String msg)

@@ -1,5 +1,7 @@
 package com.scorpius_enterprises.net;
 
+import com.scorpius_enterprises.log.Logger;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -17,17 +19,23 @@ abstract class Dialog
 
     String read()
     {
+        Logger.logD("enter trace");
+
         String[] msg = new String[1];
 
         switch (SocketUtils.readUTF(socket, msg))
         {
             case 0:
             case -1:
+                Logger.logD("exit trace");
+
                 return msg[0];
             default:
                 ready = false;
                 close();
         }
+
+        Logger.logD("exit trace");
 
         return null;
     }

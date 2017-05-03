@@ -1,4 +1,4 @@
-package com.scorpius_enterprises.net;
+package com.scorpius_enterprises.net2;
 
 import com.scorpius_enterprises.log.Logger;
 
@@ -16,6 +16,20 @@ import java.net.Socket;
  */
 abstract class SocketUtils
 {
+    static int readUTF(final IReadListener listener, final Socket socket)
+    {
+        String[] in = new String[1];
+
+        int res = readUTF(socket, in);
+
+        if (res >= 0)
+        {
+            listener.read(in[0]);
+        }
+
+        return res;
+    }
+
     static int readUTF(final Socket socket, final String[] out)
     {
         Logger.logD("enter trace");
@@ -81,24 +95,47 @@ abstract class SocketUtils
 
     static int writeUTF(final Socket socket, final String out)
     {
+        Logger.logD("enter trace");
+
         if (out != null)
         {
+            Logger.logD("out != null");
+
             if (socket != null)
             {
+                Logger.logD("socket != null");
+
                 try
                 {
+                    Logger.logD("getting dos");
+
                     DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+
+                    Logger.logD("got dos");
+
+                    Logger.logD("performing write");
+
                     dos.writeUTF(out);
+
+                    Logger.logD("exit trace");
+
                     return 0;
                 }
                 catch (IOException e)
                 {
                     e.printStackTrace();
+
+                    Logger.logD("exit trace");
+
                     return -3;
                 }
             }
+            Logger.logD("exit trace");
+
             return -2;
         }
+        Logger.logD("exit trace");
+
         return -1;
     }
 }
