@@ -8,9 +8,7 @@ package com.scorpius_enterprises.net2;
  */
 public interface IDialog
 {
-    void open();
-
-    void write(String out);
+    void write(final String out);
 
     boolean isReady();
 

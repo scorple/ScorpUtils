@@ -54,13 +54,22 @@ abstract class SocketUtils
 
                     try
                     {
-                        Logger.logD("performing read");
+                        Logger.logD("checking available");
 
-                        out[0] = dis.readUTF();
+                        if (dis.available() > 0)
+                        {
+                            Logger.logD("performing read");
+
+                            out[0] = dis.readUTF();
+
+                            Logger.logD("exit trace");
+
+                            return 0;
+                        }
 
                         Logger.logD("exit trace");
 
-                        return 0;
+                        return -1;
                     }
                     catch (EOFException e)
                     {
@@ -116,6 +125,10 @@ abstract class SocketUtils
                     Logger.logD("performing write");
 
                     dos.writeUTF(out);
+
+                    Logger.logD("performing flush");
+
+                    dos.flush();
 
                     Logger.logD("exit trace");
 

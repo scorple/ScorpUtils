@@ -22,7 +22,7 @@ public class Client extends Dialog
         status("client started");
     }
 
-    public class ClientConnector extends Thread
+    private class ClientConnector extends Thread
     {
         private String serverAddress;
 
@@ -39,6 +39,8 @@ public class Client extends Dialog
                 socket = new Socket(serverAddress, NetworkConstants.SOCKET);
 
                 status("connected to server");
+
+                open();
             }
             catch (UnknownHostException e)
             {

@@ -33,6 +33,8 @@ public class Server extends Dialog
                 serverSocket.close();
 
                 status("connected to client");
+
+                open();
             }
             catch (IOException e)
             {

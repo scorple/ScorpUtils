@@ -8,9 +8,9 @@ package com.scorpius_enterprises.net2;
  */
 public interface IDialogListener
 {
-    void notifyMessage(String msg);
+    void notifyMessage(final String message);
 
-    void notifyStatus(String sts);
+    void notifyStatus(final String status);
 
-    void notifyError(String err);
+    void notifyError(final String error);
 }

@@ -12,32 +12,36 @@ import java.net.Socket;
 class Dialog implements IDialog
 {
     private boolean open;
+    private boolean closed = false;
 
     Socket socket;
 
     IDialogListener listener;
 
-    @Override
-    public void open()
+    void open()
     {
         open = true;
+        closed = false;
+
         Reader reader = new Reader();
         reader.start();
+
+        status("dialog opened");
     }
 
-    private void read(final String msg)
+    private void read(final String message)
     {
-        listener.notifyMessage(msg);
+        listener.notifyMessage(message);
     }
 
-    void status(final String sts)
+    void status(final String status)
     {
-        listener.notifyStatus(sts);
+        listener.notifyStatus(status);
     }
 
-    void error(final String err)
+    void error(final String error)
     {
-        listener.notifyError(err);
+        listener.notifyError(error);
     }
 
     @Override
@@ -45,7 +49,7 @@ class Dialog implements IDialog
     {
         int res = SocketUtils.writeUTF(socket, out);
 
-        if (res < 0)
+        if (res < 0 && !closed)
         {
             error("write error");
             close();
@@ -62,6 +66,7 @@ class Dialog implements IDialog
     public void close()
     {
         open = false;
+        closed = true;
 
         if (socket != null)
         {
@@ -91,7 +96,7 @@ class Dialog implements IDialog
                 {
                     int res = SocketUtils.readUTF(this, socket);
 
-                    if (res < 0)
+                    if (res < -1 && !closed)
                     {
                         error("read error");
                         close();
