@@ -27,12 +27,12 @@ public class BoundingBox
         for (Vertex3f vertex : vertices)
         {
             b1.setX(Math.min(b1.getX(), vertex.getX()));
-            b1.setX(Math.min(b1.getY(), vertex.getY()));
-            b1.setX(Math.min(b1.getZ(), vertex.getZ()));
+            b1.setY(Math.min(b1.getY(), vertex.getY()));
+            b1.setZ(Math.min(b1.getZ(), vertex.getZ()));
 
             b2.setX(Math.max(b2.getX(), vertex.getX()));
-            b2.setX(Math.max(b2.getY(), vertex.getY()));
-            b2.setX(Math.max(b2.getZ(), vertex.getZ()));
+            b2.setY(Math.max(b2.getY(), vertex.getY()));
+            b2.setZ(Math.max(b2.getZ(), vertex.getZ()));
         }
     }
 
