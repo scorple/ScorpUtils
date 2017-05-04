@@ -55,4 +55,50 @@ public class Vector3f
     {
         this.z = z;
     }
+
+    public float getLength()
+    {
+        return getLength(this);
+    }
+
+    public float getDistance(final Vector3f other)
+    {
+        return getDistance(this, other);
+    }
+
+    public Vector3f getDelta(final Vector3f other)
+    {
+        Vector3f res = new Vector3f();
+
+        res.setX(other.getX() - x);
+        res.setY(other.getY() - y);
+        res.setZ(other.getZ() - z);
+
+        return res;
+    }
+
+    public static float getLength(final Vector3f vector)
+    {
+        float x = vector.getX();
+        float y = vector.getY();
+        float z = vector.getZ();
+
+        return (float) Math.sqrt((x * x) + (y * y) + (z * z));
+    }
+
+    public static float getDistance(final Vector3f vec1, final Vector3f vec2)
+    {
+        return getLength(getDelta(vec1, vec2));
+    }
+
+    public static Vector3f getDelta(final Vector3f vec1, final Vector3f vec2)
+    {
+        Vector3f res = new Vector3f();
+
+        res.setX(vec2.getX() - vec1.getX());
+        res.setY(vec2.getY() - vec1.getY());
+        res.setZ(vec2.getZ() - vec1.getZ());
+
+        return res;
+    }
 }
