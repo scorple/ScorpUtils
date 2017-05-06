@@ -68,13 +68,12 @@ public class Vector3f
 
     public Vector3f getDelta(final Vector3f other)
     {
-        Vector3f res = new Vector3f();
+        return getDelta(this, other);
+    }
 
-        res.setX(other.getX() - x);
-        res.setY(other.getY() - y);
-        res.setZ(other.getZ() - z);
-
-        return res;
+    public Vector3f crossProduct(final Vector3f other)
+    {
+        return crossProduct(this, other);
     }
 
     public static float getLength(final Vector3f vector)
@@ -98,6 +97,17 @@ public class Vector3f
         res.setX(vec2.getX() - vec1.getX());
         res.setY(vec2.getY() - vec1.getY());
         res.setZ(vec2.getZ() - vec1.getZ());
+
+        return res;
+    }
+
+    public static Vector3f crossProduct(final Vector3f vec1, final Vector3f vec2)
+    {
+        Vector3f res = new Vector3f();
+
+        res.setX((vec1.getY() * vec2.getZ()) - (vec1.getZ() * vec2.getY()));
+        res.setY((vec1.getZ() * vec2.getX()) - (vec1.getX() * vec2.getZ()));
+        res.setZ((vec1.getX() * vec2.getY()) - (vec1.getY() * vec2.getX()));
 
         return res;
     }

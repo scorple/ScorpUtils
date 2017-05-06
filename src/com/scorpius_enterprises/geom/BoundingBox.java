@@ -11,6 +11,12 @@ public class BoundingBox
     private Vertex3f b1;
     private Vertex3f b2;
 
+    public BoundingBox()
+    {
+        b1 = new Vertex3f();
+        b2 = new Vertex3f();
+    }
+
     public BoundingBox(Vertex3f b1, Vertex3f b2)
     {
         this.b1 = b1;
@@ -22,17 +28,20 @@ public class BoundingBox
         b1 = new Vertex3f();
         b2 = new Vertex3f();
 
-        Vertex3f[] vertices = mesh.getVertices();
+        Triangle[] triangles = mesh.getTriangles();
 
-        for (Vertex3f vertex : vertices)
+        for (Triangle triangle : triangles)
         {
-            b1.setX(Math.min(b1.getX(), vertex.getX()));
-            b1.setY(Math.min(b1.getY(), vertex.getY()));
-            b1.setZ(Math.min(b1.getZ(), vertex.getZ()));
+            for (Vertex3f vertex : triangle.getVerts())
+            {
+                b1.setX(Math.min(b1.getX(), vertex.getX()));
+                b1.setY(Math.min(b1.getY(), vertex.getY()));
+                b1.setZ(Math.min(b1.getZ(), vertex.getZ()));
 
-            b2.setX(Math.max(b2.getX(), vertex.getX()));
-            b2.setY(Math.max(b2.getY(), vertex.getY()));
-            b2.setZ(Math.max(b2.getZ(), vertex.getZ()));
+                b2.setX(Math.max(b2.getX(), vertex.getX()));
+                b2.setY(Math.max(b2.getY(), vertex.getY()));
+                b2.setZ(Math.max(b2.getZ(), vertex.getZ()));
+            }
         }
     }
 
@@ -54,5 +63,14 @@ public class BoundingBox
     public void setB2(final Vertex3f b2)
     {
         this.b2 = b2;
+    }
+
+    public Vertex3f getBottomCenter()
+    {
+        float x = b1.getX() + ((b2.getX() - b1.getX()) / 2);
+        float y = b1.getY();
+        float z = b1.getZ() + ((b2.getZ() - b1.getZ()) / 2);
+
+        return new Vertex3f(x, y, z);
     }
 }

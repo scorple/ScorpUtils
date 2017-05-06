@@ -8,25 +8,25 @@ package com.scorpius_enterprises.geom;
  */
 public class Mesh
 {
-    private Vertex3f[] vertices;
+    private Triangle[] triangles;
 
     public Mesh()
     {
 
     }
 
-    public Mesh(final Vertex3f[] vertices)
+    public Mesh(final Triangle[] triangles)
     {
-        this.vertices = vertices;
+        this.triangles = triangles;
     }
 
-    public Vertex3f[] getVertices()
+    public Triangle[] getTriangles()
     {
-        return vertices;
+        return triangles;
     }
 
-    public void setVertices(final Vertex3f[] vertices)
+    public void setTriangles(final Triangle[] triangles)
     {
-        this.vertices = vertices;
+        this.triangles = triangles;
     }
 }
