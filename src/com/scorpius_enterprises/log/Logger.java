@@ -124,6 +124,75 @@ public class Logger
     }
 
     /**
+     * May be called to disable a single tag for logging. Log method calls
+     * including a tag parameter will only be displayed if that tag is in the
+     * list of registered tags.
+     *
+     * @param tag String: The tag to deregister.
+     */
+    public static void deregisterTag(String tag)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to deregister tag before initializing, created Logger instance");
+        }
+
+        if (REGISTERED_TAGS.contains(tag))
+        {
+            Logger.REGISTERED_TAGS.remove(tag);
+        }
+    }
+
+    /**
+     * May be called to disable a list of tags for logging. Log method calls
+     * including a tag parameter will only be displayed if that tag is in the
+     * list of registered tags.
+     *
+     * @param tags String[]: The list of tags to deregister.
+     */
+    public static void deregisterTags(String[] tags)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to deregister tag before initializing, created Logger instance");
+        }
+
+        Arrays.stream(tags).parallel().forEachOrdered(tag ->
+                                                      {
+                                                          if (REGISTERED_TAGS.contains(tag))
+                                                          {
+                                                              Logger.REGISTERED_TAGS.remove(tag);
+                                                          }
+                                                      });
+    }
+
+    /**
+     * May be called to disable a list of tags for logging. Log method calls
+     * including a tag parameter will only be displayed if that tag is in the
+     * list of registered tags.
+     *
+     * @param tags ArrayList: The list of tags to deregister.
+     */
+    public static void deregisterTags(ArrayList<String> tags)
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+            logW("attempt to deregister tag before initializing, created Logger instance");
+        }
+
+        tags.stream().parallel().forEachOrdered(tag ->
+                                                {
+                                                    if (REGISTERED_TAGS.contains(tag))
+                                                    {
+                                                        Logger.REGISTERED_TAGS.remove(tag);
+                                                    }
+                                                });
+    }
+
+    /**
      * May be called to prevent a single log type from being displayed. All log
      * types will display by default.
      *
@@ -258,13 +327,18 @@ public class Logger
         return stackTrace[STACK_TRACE_DEPTH].getLineNumber();
     }
 
-    private static void postLog(final StackTraceElement[] stackTrace, final String type, final String log)
+    private static void postLog(final StackTraceElement[] stackTrace,
+                                final String type,
+                                final String log)
     {
-        System.out.println(type + SPLIT + getClassName(stackTrace) + SPLIT + getLineNumber(stackTrace) + SPLIT +
-                           getMethodName(stackTrace) + ": " + log);
+        System.out.println(
+            type + SPLIT + getClassName(stackTrace) + SPLIT + getLineNumber(stackTrace) + SPLIT +
+            getMethodName(stackTrace) + ": " + log);
     }
 
-    private static void processLog(final StackTraceElement[] stackTrace, final E_TYPE type, final String log)
+    private static void processLog(final StackTraceElement[] stackTrace,
+                                   final E_TYPE type,
+                                   final String log)
     {
         if (!DISABLED_TYPES.contains(type))
         {
@@ -288,7 +362,8 @@ public class Logger
                                    final String log,
                                    final String tag)
     {
-        if (!DISABLED_TYPES.contains(type) && REGISTERED_TAGS.stream().parallel().anyMatch(e_tag -> e_tag.equals(tag)))
+        if (!DISABLED_TYPES.contains(type) &&
+            REGISTERED_TAGS.stream().parallel().anyMatch(e_tag -> e_tag.equals(tag)))
         {
             postLog(stackTrace, type.toString() + SPLIT + tag, log);
         }
