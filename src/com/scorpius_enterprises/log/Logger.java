@@ -1,7 +1,9 @@
 package com.scorpius_enterprises.log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * {@link Logger com.scorpius_enterprises.logging.Logger}
@@ -332,8 +334,17 @@ public class Logger
                                 final String log)
     {
         System.out.println(
-            type + SPLIT + getClassName(stackTrace) + SPLIT + getLineNumber(stackTrace) + SPLIT +
-            getMethodName(stackTrace) + ": " + log);
+            new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) +
+            SPLIT +
+            type +
+            SPLIT +
+            getClassName(stackTrace) +
+            SPLIT +
+            getLineNumber(stackTrace) +
+            SPLIT +
+            getMethodName(stackTrace) +
+            SPLIT +
+            log);
     }
 
     private static void processLog(final StackTraceElement[] stackTrace,
