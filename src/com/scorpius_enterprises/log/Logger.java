@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * {@link Logger com.scorpius_enterprises.logging.Logger}
+ * {@link Logger com.scorpius_enterprises.log.Logger}
  *
  * @author Scorple
  * @since 2017-03-11
@@ -15,7 +15,7 @@ public class Logger
 {
     private static Logger instance;
 
-    private static final int STACK_TRACE_DEPTH = 2;
+    private static int STACK_TRACE_DEPTH = 2;
 
     private static       int               LOG_LEVEL       = 0;
     private static final ArrayList<String> REGISTERED_TAGS = new ArrayList<>();
@@ -36,6 +36,22 @@ public class Logger
     private Logger()
     {
 
+    }
+
+    private static void checkInstance()
+    {
+        if (instance == null)
+        {
+            instance = new Logger();
+
+            STACK_TRACE_DEPTH = 3;
+
+            processLog(Thread.currentThread().getStackTrace(),
+                       E_TYPE.WARNING,
+                       "attempt to log or configure without initializing, created Logger instance with LOG_LEVEL 0");
+
+            STACK_TRACE_DEPTH = 2;
+        }
     }
 
     /**
@@ -65,11 +81,7 @@ public class Logger
      */
     public static void registerTag(String tag)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to register tag before initializing, created Logger instance");
-        }
+        checkInstance();
 
         if (!REGISTERED_TAGS.contains(tag))
         {
@@ -86,11 +98,7 @@ public class Logger
      */
     public static void registerTags(String[] tags)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to register tag before initializing, created Logger instance");
-        }
+        checkInstance();
 
         Arrays.stream(tags).parallel().forEachOrdered(tag ->
                                                       {
@@ -110,11 +118,7 @@ public class Logger
      */
     public static void registerTags(ArrayList<String> tags)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to register tag before initializing, created Logger instance");
-        }
+        checkInstance();
 
         tags.stream().parallel().forEachOrdered(tag ->
                                                 {
@@ -134,11 +138,7 @@ public class Logger
      */
     public static void deregisterTag(String tag)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to deregister tag before initializing, created Logger instance");
-        }
+        checkInstance();
 
         if (REGISTERED_TAGS.contains(tag))
         {
@@ -155,11 +155,7 @@ public class Logger
      */
     public static void deregisterTags(String[] tags)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to deregister tag before initializing, created Logger instance");
-        }
+        checkInstance();
 
         Arrays.stream(tags).parallel().forEachOrdered(tag ->
                                                       {
@@ -179,11 +175,7 @@ public class Logger
      */
     public static void deregisterTags(ArrayList<String> tags)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to deregister tag before initializing, created Logger instance");
-        }
+        checkInstance();
 
         tags.stream().parallel().forEachOrdered(tag ->
                                                 {
@@ -202,12 +194,7 @@ public class Logger
      */
     public static void disableType(E_TYPE type)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to disable type before initializing, created Logger" +
-                 "instance");
-        }
+        checkInstance();
 
         if (!DISABLED_TYPES.contains(type))
         {
@@ -223,12 +210,7 @@ public class Logger
      */
     public static void disableTypes(E_TYPE[] types)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to disable type before initializing, created Logger" +
-                 "instance");
-        }
+        checkInstance();
 
         Arrays.stream(types).parallel().forEachOrdered(type ->
                                                        {
@@ -248,12 +230,7 @@ public class Logger
      */
     public static void disableTypes(ArrayList<E_TYPE> types)
     {
-        if (instance == null)
-        {
-            instance = new Logger();
-            logW("attempt to disable type before initializing, created Logger" +
-                 "instance");
-        }
+        checkInstance();
 
         types.stream().parallel().forEachOrdered(type ->
                                                  {
@@ -272,6 +249,8 @@ public class Logger
      */
     public static void enableType(E_TYPE type)
     {
+        checkInstance();
+
         if (DISABLED_TYPES.contains(type))
         {
             DISABLED_TYPES.remove(type);
@@ -286,6 +265,8 @@ public class Logger
      */
     public static void enableTypes(E_TYPE[] types)
     {
+        checkInstance();
+
         Arrays.stream(types).parallel().forEachOrdered(type ->
                                                        {
                                                            if (DISABLED_TYPES.contains(type))
@@ -303,6 +284,8 @@ public class Logger
      */
     public static void enableTypes(ArrayList<E_TYPE> types)
     {
+        checkInstance();
+
         types.stream().parallel().forEachOrdered(type ->
                                                  {
                                                      if (DISABLED_TYPES.contains(type))
@@ -353,7 +336,9 @@ public class Logger
     {
         if (!DISABLED_TYPES.contains(type))
         {
-            postLog(stackTrace, type.toString(), log);
+            postLog(stackTrace,
+                    type.toString(),
+                    log);
         }
     }
 
@@ -364,7 +349,9 @@ public class Logger
     {
         if (!DISABLED_TYPES.contains(type) && LOG_LEVEL >= level)
         {
-            postLog(stackTrace, type.toString() + SPLIT + level, log);
+            postLog(stackTrace,
+                    type.toString() + SPLIT + level,
+                    log);
         }
     }
 
@@ -376,7 +363,9 @@ public class Logger
         if (!DISABLED_TYPES.contains(type) &&
             REGISTERED_TAGS.stream().parallel().anyMatch(e_tag -> e_tag.equals(tag)))
         {
-            postLog(stackTrace, type.toString() + SPLIT + tag, log);
+            postLog(stackTrace,
+                    type.toString() + SPLIT + tag,
+                    log);
         }
     }
 
@@ -389,7 +378,9 @@ public class Logger
         if (!DISABLED_TYPES.contains(type) && LOG_LEVEL >= level &&
             REGISTERED_TAGS.stream().parallel().anyMatch(e_tag -> e_tag.equals(tag)))
         {
-            postLog(stackTrace, type.toString() + SPLIT + level + SPLIT + tag, log);
+            postLog(stackTrace,
+                    type.toString() + SPLIT + level + SPLIT + tag,
+                    log);
         }
     }
 
@@ -403,7 +394,11 @@ public class Logger
      */
     public static void log(final String log)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.GENERAL, log);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.GENERAL,
+                   log);
     }
 
     /**
@@ -418,9 +413,15 @@ public class Logger
      *
      * @see #init(int)
      */
-    public static void log(final String log, final int level)
+    public static void log(final String log,
+                           final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.GENERAL, log, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.GENERAL,
+                   log,
+                   level);
     }
 
     /**
@@ -437,9 +438,15 @@ public class Logger
      * @see #registerTags(String[])
      * @see #registerTags(ArrayList)
      */
-    public static void log(final String log, final String tag)
+    public static void log(final String log,
+                           final String tag)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.GENERAL, log, tag);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.GENERAL,
+                   log,
+                   tag);
     }
 
     /**
@@ -462,9 +469,17 @@ public class Logger
      * @see #registerTags(ArrayList)
      * @see #init(int)
      */
-    public static void log(final String log, final String tag, final int level)
+    public static void log(final String log,
+                           final String tag,
+                           final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.GENERAL, log, tag, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.GENERAL,
+                   log,
+                   tag,
+                   level);
     }
 
     /**
@@ -478,7 +493,11 @@ public class Logger
      */
     public static void logI(final String log)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.INFO, log);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.INFO,
+                   log);
     }
 
     /**
@@ -494,9 +513,15 @@ public class Logger
      *
      * @see #init(int)
      */
-    public static void logI(final String log, final int level)
+    public static void logI(final String log,
+                            final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.INFO, log, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.INFO,
+                   log,
+                   level);
     }
 
     /**
@@ -514,9 +539,15 @@ public class Logger
      * @see #registerTags(String[])
      * @see #registerTags(ArrayList)
      */
-    public static void logI(final String log, final String tag)
+    public static void logI(final String log,
+                            final String tag)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.INFO, log, tag);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.INFO,
+                   log,
+                   tag);
     }
 
     /**
@@ -540,9 +571,17 @@ public class Logger
      * @see #registerTags(ArrayList)
      * @see #init(int)
      */
-    public static void logI(final String log, final String tag, final int level)
+    public static void logI(final String log,
+                            final String tag,
+                            final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.INFO, log, tag, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.INFO,
+                   log,
+                   tag,
+                   level);
     }
 
     /**
@@ -556,7 +595,11 @@ public class Logger
      */
     public static void logD(final String log)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.DEBUG, log);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.DEBUG,
+                   log);
     }
 
     /**
@@ -572,9 +615,15 @@ public class Logger
      *
      * @see #init(int)
      */
-    public static void logD(final String log, final int level)
+    public static void logD(final String log,
+                            final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.DEBUG, log, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.DEBUG,
+                   log,
+                   level);
     }
 
     /**
@@ -592,9 +641,15 @@ public class Logger
      * @see #registerTags(String[])
      * @see #registerTags(ArrayList)
      */
-    public static void logD(final String log, final String tag)
+    public static void logD(final String log,
+                            final String tag)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.DEBUG, log, tag);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.DEBUG,
+                   log,
+                   tag);
     }
 
     /**
@@ -618,9 +673,17 @@ public class Logger
      * @see #registerTags(ArrayList)
      * @see #init(int)
      */
-    public static void logD(final String log, final String tag, final int level)
+    public static void logD(final String log,
+                            final String tag,
+                            final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.DEBUG, log, tag, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.DEBUG,
+                   log,
+                   tag,
+                   level);
     }
 
     /**
@@ -634,7 +697,11 @@ public class Logger
      */
     public static void logW(final String log)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.WARNING, log);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.WARNING,
+                   log);
     }
 
     /**
@@ -650,9 +717,15 @@ public class Logger
      *
      * @see #init(int)
      */
-    public static void logW(final String log, final int level)
+    public static void logW(final String log,
+                            final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.WARNING, log, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.WARNING,
+                   log,
+                   level);
     }
 
     /**
@@ -670,9 +743,15 @@ public class Logger
      * @see #registerTags(String[])
      * @see #registerTags(ArrayList)
      */
-    public static void logW(final String log, final String tag)
+    public static void logW(final String log,
+                            final String tag)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.WARNING, log, tag);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.WARNING,
+                   log,
+                   tag);
     }
 
     /**
@@ -696,9 +775,17 @@ public class Logger
      * @see #registerTags(ArrayList)
      * @see #init(int)
      */
-    public static void logW(final String log, final String tag, final int level)
+    public static void logW(final String log,
+                            final String tag,
+                            final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.WARNING, log, tag, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.WARNING,
+                   log,
+                   tag,
+                   level);
     }
 
     /**
@@ -711,7 +798,11 @@ public class Logger
      */
     public static void logE(final String log)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.ERROR, log);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.ERROR,
+                   log);
     }
 
     /**
@@ -726,9 +817,15 @@ public class Logger
      *
      * @see #init(int)
      */
-    public static void logE(final String log, final int level)
+    public static void logE(final String log,
+                            final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.ERROR, log, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.ERROR,
+                   log,
+                   level);
     }
 
     /**
@@ -745,9 +842,15 @@ public class Logger
      * @see #registerTags(String[])
      * @see #registerTags(ArrayList)
      */
-    public static void logE(final String log, final String tag)
+    public static void logE(final String log,
+                            final String tag)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.ERROR, log, tag);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.ERROR,
+                   log,
+                   tag);
     }
 
     /**
@@ -770,8 +873,16 @@ public class Logger
      * @see #registerTags(ArrayList)
      * @see #init(int)
      */
-    public static void logE(final String log, final String tag, final int level)
+    public static void logE(final String log,
+                            final String tag,
+                            final int level)
     {
-        processLog(Thread.currentThread().getStackTrace(), E_TYPE.ERROR, log, tag, level);
+        checkInstance();
+
+        processLog(Thread.currentThread().getStackTrace(),
+                   E_TYPE.ERROR,
+                   log,
+                   tag,
+                   level);
     }
 }
