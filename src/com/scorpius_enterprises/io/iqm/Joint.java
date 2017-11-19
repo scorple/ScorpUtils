@@ -45,10 +45,12 @@ public class Joint
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         name = bb.getInt();
-        Logger.logD("" + name);
+        Logger.logD("" + name,
+                    IqmLoader.LOG_TAG);
 
         parent = bb.getInt();
-        Logger.logD("" + parent);
+        Logger.logD("" + parent,
+                    IqmLoader.LOG_TAG);
 
         StringBuilder sbt = new StringBuilder();
         sbt.append("jt");
@@ -60,7 +62,8 @@ public class Joint
             sbt.append(" ")
                .append(translate[i]);
         }
-        Logger.logD(sbt.toString());
+        Logger.logD(sbt.toString(),
+                    IqmLoader.LOG_TAG);
 
         StringBuilder sbr = new StringBuilder();
         sbr.append("jr");
@@ -72,7 +75,8 @@ public class Joint
             sbr.append(" ")
                .append(rotate[i]);
         }
-        Logger.logD(sbr.toString());
+        Logger.logD(sbr.toString(),
+                    IqmLoader.LOG_TAG);
 
         StringBuilder sbs = new StringBuilder();
         sbs.append("js");
@@ -84,7 +88,8 @@ public class Joint
             sbs.append(" ")
                .append(scale[i]);
         }
-        Logger.logD(sbs.toString());
+        Logger.logD(sbs.toString(),
+                    IqmLoader.LOG_TAG);
 
         bb = ByteBuffer.wrap(buf);
         bb.position(header.getOfsText() + name);
@@ -99,7 +104,8 @@ public class Joint
         }
 
         nameString = sb.toString();
-        Logger.logD(nameString);
+        Logger.logD(nameString,
+                    IqmLoader.LOG_TAG);
     }
 
     public int getName()

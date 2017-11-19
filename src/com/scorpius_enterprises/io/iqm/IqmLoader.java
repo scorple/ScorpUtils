@@ -15,20 +15,21 @@ import java.nio.ByteOrder;
  */
 public class IqmLoader
 {
-    public static void loadIBO(final String fileName,
-                               final int[] numIndices,
-                               final float[][] posCoordArray,
-                               final float[][] texCoordArray,
-                               final float[][] normalVecCompArray,
-                               final int[][] vertexIndexArray)
+    public static final String LOG_TAG = "IqmLoader";
+
+    public static IqmWrapper loadIBO(final String fileName)
     {
-        float[] iPosCoordArray;
+        IqmWrapper ret = null;
+
+        int numIndices = 0;
+
+        float[] posCoordArray;
         int     posCoordArrayIndex      = 0;
-        float[] iTexCoordArray;
+        float[] texCoordArray;
         int     texCoordArrayIndex      = 0;
-        float[] iNormalVecCompArray;
+        float[] normalVecCompArray;
         int     normalVecCompArrayIndex = 0;
-        int[]   iVertexIndexArray;
+        int[]   vertexIndexArray;
         int     vertexIndexArrayIndex   = 0;
 
         Header        header = new Header();
@@ -71,11 +72,11 @@ public class IqmLoader
 
         vertices = new Vertex[header.getNumVertices()];
 
-        iPosCoordArray = new float[header.getNumVertices() * VertexArray.NUM_POSITION_COMPONENTS];
-        iTexCoordArray = new float[header.getNumVertices() * VertexArray.NUM_TEXCOORD_COMPONENTS];
-        iNormalVecCompArray = new float[header.getNumVertices()
-                                        * VertexArray.NUM_NORMAL_COMPONENTS];
-        iVertexIndexArray = new int[header.getNumTriangles() * 3];
+        posCoordArray = new float[header.getNumVertices() * VertexArray.NUM_POSITION_COMPONENTS];
+        texCoordArray = new float[header.getNumVertices() * VertexArray.NUM_TEXCOORD_COMPONENTS];
+        normalVecCompArray = new float[header.getNumVertices()
+                                       * VertexArray.NUM_NORMAL_COMPONENTS];
+        vertexIndexArray = new int[header.getNumTriangles() * 3];
 
         vertexArrays = new VertexArray[header.getNumVertexArrays()];
 
@@ -129,13 +130,13 @@ public class IqmLoader
                         }
                         vertex.setPosition(position);
 
-                        iPosCoordArray[posCoordArrayIndex++] = position[0];
-                        iPosCoordArray[posCoordArrayIndex++] = position[2];
-                        iPosCoordArray[posCoordArrayIndex++] = -position[1];
+                        posCoordArray[posCoordArrayIndex++] = position[0];
+                        posCoordArray[posCoordArrayIndex++] = position[2];
+                        posCoordArray[posCoordArrayIndex++] = -position[1];
 
                         break;
                     case VertexArray.TYPE_IQM_TEXCOORD:
-                        float[] texcoord = new float[VertexArray.NUM_TEXCOORD_COMPONENTS];
+                        float[] texCoord = new float[VertexArray.NUM_TEXCOORD_COMPONENTS];
                         compBuf = new byte[VertexArray.NUM_TEXCOORD_COMPONENTS
                                            * VertexArray.FLOAT_SIZE];
                         System.arraycopy(buf,
@@ -149,10 +150,10 @@ public class IqmLoader
                              k < VertexArray.NUM_TEXCOORD_COMPONENTS;
                              ++k)
                         {
-                            texcoord[k] = bb.getFloat();
-                            iTexCoordArray[texCoordArrayIndex++] = texcoord[k];
+                            texCoord[k] = bb.getFloat();
+                            texCoordArray[texCoordArrayIndex++] = texCoord[k];
                         }
-                        vertex.setTexCoord(texcoord);
+                        vertex.setTexCoord(texCoord);
                         break;
                     case VertexArray.TYPE_IQM_NORMAL:
                         float[] normal = new float[VertexArray.NUM_NORMAL_COMPONENTS];
@@ -173,9 +174,9 @@ public class IqmLoader
                         }
                         vertex.setNormal(normal);
 
-                        iNormalVecCompArray[normalVecCompArrayIndex++] = normal[0];
-                        iNormalVecCompArray[normalVecCompArrayIndex++] = normal[2];
-                        iNormalVecCompArray[normalVecCompArrayIndex++] = -normal[1];
+                        normalVecCompArray[normalVecCompArrayIndex++] = normal[0];
+                        normalVecCompArray[normalVecCompArrayIndex++] = normal[2];
+                        normalVecCompArray[normalVecCompArrayIndex++] = -normal[1];
 
                         break;
                     case VertexArray.TYPE_IQM_TANGENT:
@@ -234,7 +235,8 @@ public class IqmLoader
                 sbp.append(" ")
                    .append(j);
             }
-            Logger.logD(sbp.toString());
+            Logger.logD(sbp.toString(),
+                        LOG_TAG);
 
             StringBuilder sbt = new StringBuilder();
             sbt.append("vt");
@@ -243,7 +245,8 @@ public class IqmLoader
                 sbt.append(" ")
                    .append(j);
             }
-            Logger.logD(sbt.toString());
+            Logger.logD(sbt.toString(),
+                        LOG_TAG);
 
             StringBuilder sbn = new StringBuilder();
             sbn.append("vn");
@@ -252,7 +255,8 @@ public class IqmLoader
                 sbn.append(" ")
                    .append(j);
             }
-            Logger.logD(sbn.toString());
+            Logger.logD(sbn.toString(),
+                        LOG_TAG);
 
             StringBuilder sbbi = new StringBuilder();
             sbbi.append("vbi");
@@ -262,7 +266,8 @@ public class IqmLoader
                     .append(String.format("%02x",
                                           j));
             }
-            Logger.logD(sbbi.toString());
+            Logger.logD(sbbi.toString(),
+                        LOG_TAG);
 
             StringBuilder sbbw = new StringBuilder();
             sbbw.append("vbw");
@@ -272,7 +277,8 @@ public class IqmLoader
                     .append(String.format("%02x",
                                           j));
             }
-            Logger.logD(sbbw.toString());
+            Logger.logD(sbbw.toString(),
+                        LOG_TAG);
         }
 
         triangles = new Triangle[header.getNumTriangles()];
@@ -295,9 +301,10 @@ public class IqmLoader
             {
                 sb.append(" ")
                   .append(j);
-                iVertexIndexArray[vertexIndexArrayIndex++] = j;
+                vertexIndexArray[vertexIndexArrayIndex++] = j;
             }
-            Logger.logD(sb.toString());
+            Logger.logD(sb.toString(),
+                        LOG_TAG);
         }
 
         meshes = new Mesh[header.getNumMeshes()];
@@ -358,7 +365,8 @@ public class IqmLoader
              ++i)
         {
             frames[i] = bb.getShort();
-            Logger.logD("" + frames[i]);
+            Logger.logD("" + frames[i],
+                        LOG_TAG);
         }
 
         anims = new Anim[header.getNumAnims()];
@@ -376,26 +384,16 @@ public class IqmLoader
             anims[i] = anim;
         }
 
-        if (numIndices != null)
-        {
-            numIndices[0] = header.getNumTriangles() * 3;
-            Logger.logI("" + numIndices[0]);
-        }
-        if (posCoordArray != null)
-        {
-            posCoordArray[0] = iPosCoordArray;
-        }
-        if (texCoordArray != null)
-        {
-            texCoordArray[0] = iTexCoordArray;
-        }
-        if (normalVecCompArray != null)
-        {
-            normalVecCompArray[0] = iNormalVecCompArray;
-        }
-        if (vertexIndexArray != null)
-        {
-            vertexIndexArray[0] = iVertexIndexArray;
-        }
+        numIndices = header.getNumTriangles() * 3;
+        Logger.logI("" + numIndices,
+                    LOG_TAG);
+
+        ret = new IqmWrapper(numIndices,
+                             posCoordArray,
+                             texCoordArray,
+                             normalVecCompArray,
+                             vertexIndexArray);
+
+        return ret;
     }
 }

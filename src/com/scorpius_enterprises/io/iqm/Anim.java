@@ -35,19 +35,24 @@ public class Anim
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         name = bb.getInt();
-        Logger.logD("" + name);
+        Logger.logD("" + name,
+                    IqmLoader.LOG_TAG);
 
         firstFrame = bb.getInt();
-        Logger.logD("" + firstFrame);
+        Logger.logD("" + firstFrame,
+                    IqmLoader.LOG_TAG);
 
         numFrames = bb.getInt();
-        Logger.logD("" + numFrames);
+        Logger.logD("" + numFrames,
+                    IqmLoader.LOG_TAG);
 
         frameRate = bb.getFloat();
-        Logger.logD("" + frameRate);
+        Logger.logD("" + frameRate,
+                    IqmLoader.LOG_TAG);
 
         flags = bb.getInt();
-        Logger.logD("" + flags);
+        Logger.logD("" + flags,
+                    IqmLoader.LOG_TAG);
 
         bb = ByteBuffer.wrap(buf);
         bb.position(header.getOfsText() + name);
@@ -62,7 +67,8 @@ public class Anim
         }
 
         nameString = sb.toString();
-        Logger.logD(nameString);
+        Logger.logD(nameString,
+                    IqmLoader.LOG_TAG);
     }
 
     public int getName()

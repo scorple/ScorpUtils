@@ -71,19 +71,24 @@ public class VertexArray
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         type = bb.getInt();
-        Logger.logD("" + type);
+        Logger.logD("" + type,
+                    IqmLoader.LOG_TAG);
 
         flags = bb.getInt();
-        Logger.logD("" + flags);
+        Logger.logD("" + flags,
+                    IqmLoader.LOG_TAG);
 
         format = bb.getInt();
-        Logger.logD("" + format);
+        Logger.logD("" + format,
+                    IqmLoader.LOG_TAG);
 
         size = bb.getInt();
-        Logger.logD("" + size);
+        Logger.logD("" + size,
+                    IqmLoader.LOG_TAG);
 
         this.offset = bb.getInt();
-        Logger.logD("" + this.offset);
+        Logger.logD("" + this.offset,
+                    IqmLoader.LOG_TAG);
 
         /*switch (type)
         {

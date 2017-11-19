@@ -40,22 +40,28 @@ public class Mesh
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         name = bb.getInt();
-        Logger.logD("" + name);
+        Logger.logD("" + name,
+                    IqmLoader.LOG_TAG);
 
         material = bb.getInt();
-        Logger.logD("" + material);
+        Logger.logD("" + material,
+                    IqmLoader.LOG_TAG);
 
         firstVertex = bb.getInt();
-        Logger.logD("" + firstVertex);
+        Logger.logD("" + firstVertex,
+                    IqmLoader.LOG_TAG);
 
         numVertices = bb.getInt();
-        Logger.logD("" + numVertices);
+        Logger.logD("" + numVertices,
+                    IqmLoader.LOG_TAG);
 
         firstTriangle = bb.getInt();
-        Logger.logD("" + firstTriangle);
+        Logger.logD("" + firstTriangle,
+                    IqmLoader.LOG_TAG);
 
         numTriangles = bb.getInt();
-        Logger.logD("" + numTriangles);
+        Logger.logD("" + numTriangles,
+                    IqmLoader.LOG_TAG);
 
         bb = ByteBuffer.wrap(buf);
         bb.position(header.getOfsText() + name);
@@ -70,7 +76,8 @@ public class Mesh
         }
 
         nameString = sb.toString();
-        Logger.logD(nameString);
+        Logger.logD(nameString,
+                    IqmLoader.LOG_TAG);
 
         bb.position(header.getOfsText() + material);
 
@@ -82,7 +89,8 @@ public class Mesh
         }
 
         materialString = sb.toString();
-        Logger.logD(materialString);
+        Logger.logD(materialString,
+                    IqmLoader.LOG_TAG);
     }
 
     public int getName()

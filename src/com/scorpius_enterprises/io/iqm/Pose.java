@@ -39,10 +39,12 @@ public class Pose
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         parent = bb.getInt();
-        Logger.logD("" + parent);
+        Logger.logD("" + parent,
+                    IqmLoader.LOG_TAG);
 
         channelMask = bb.getInt();
-        Logger.logD("" + channelMask);
+        Logger.logD("" + channelMask,
+                    IqmLoader.LOG_TAG);
 
         StringBuilder sbo = new StringBuilder();
         sbo.append("co");
@@ -54,7 +56,8 @@ public class Pose
             sbo.append(" ")
                .append(channelOffset[i]);
         }
-        Logger.logD(sbo.toString());
+        Logger.logD(sbo.toString(),
+                    IqmLoader.LOG_TAG);
 
         StringBuilder sbs = new StringBuilder();
         sbs.append("cs");
@@ -66,6 +69,7 @@ public class Pose
             sbs.append(" ")
                .append(channelScale[i]);
         }
-        Logger.logD(sbs.toString());
+        Logger.logD(sbs.toString(),
+                    IqmLoader.LOG_TAG);
     }
 }
