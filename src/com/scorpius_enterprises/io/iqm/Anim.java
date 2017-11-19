@@ -23,11 +23,15 @@ public class Anim
 
     private String nameString;
 
-    public void load(final Header header, final byte[] buf, final int index)
+    public void load(final Header header,
+                     final byte[] buf,
+                     final int index)
     {
         int offset = header.getOfsAnims() + index * ANIM_SIZE;
 
-        ByteBuffer bb = ByteBuffer.wrap(buf, offset, ANIM_SIZE);
+        ByteBuffer bb = ByteBuffer.wrap(buf,
+                                        offset,
+                                        ANIM_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         name = bb.getInt();

@@ -9,7 +9,8 @@ import java.net.Socket;
  * @author Scorple
  * @since 2017-05-02
  */
-abstract class Dialog implements IDialog
+abstract class Dialog
+    implements IDialog
 {
     private boolean open;
     private boolean closed = false;
@@ -47,7 +48,8 @@ abstract class Dialog implements IDialog
     @Override
     public void write(final String out)
     {
-        int res = SocketUtils.writeUTF(socket, out);
+        int res = SocketUtils.writeUTF(socket,
+                                       out);
 
         if (res < 0 && !closed)
         {
@@ -85,7 +87,9 @@ abstract class Dialog implements IDialog
         socket = null;
     }
 
-    private class Reader extends Thread implements IReadListener
+    private class Reader
+        extends Thread
+        implements IReadListener
     {
         @Override
         public void run()
@@ -94,7 +98,8 @@ abstract class Dialog implements IDialog
             {
                 if (isReady())
                 {
-                    int res = SocketUtils.readUTF(this, socket);
+                    int res = SocketUtils.readUTF(this,
+                                                  socket);
 
                     if (res < -1 && !closed)
                     {

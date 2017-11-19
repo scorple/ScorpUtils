@@ -33,11 +33,15 @@ public class Joint
         scale = new float[SCALE_CHANNELS];
     }
 
-    public void load(final Header header, final byte[] buf, final int index)
+    public void load(final Header header,
+                     final byte[] buf,
+                     final int index)
     {
         int offset = header.getOfsJoints() + index * JOINT_SIZE;
 
-        ByteBuffer bb = ByteBuffer.wrap(buf, offset, JOINT_SIZE);
+        ByteBuffer bb = ByteBuffer.wrap(buf,
+                                        offset,
+                                        JOINT_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         name = bb.getInt();
@@ -48,28 +52,37 @@ public class Joint
 
         StringBuilder sbt = new StringBuilder();
         sbt.append("jt");
-        for (int i = 0; i < TRANSLATE_CHANNELS; ++i)
+        for (int i = 0;
+             i < TRANSLATE_CHANNELS;
+             ++i)
         {
             translate[i] = bb.getFloat();
-            sbt.append(" ").append(translate[i]);
+            sbt.append(" ")
+               .append(translate[i]);
         }
         Logger.logD(sbt.toString());
 
         StringBuilder sbr = new StringBuilder();
         sbr.append("jr");
-        for (int i = 0; i < ROTATE_CHANNELS; ++i)
+        for (int i = 0;
+             i < ROTATE_CHANNELS;
+             ++i)
         {
             rotate[i] = bb.getFloat();
-            sbr.append(" ").append(rotate[i]);
+            sbr.append(" ")
+               .append(rotate[i]);
         }
         Logger.logD(sbr.toString());
 
         StringBuilder sbs = new StringBuilder();
         sbs.append("js");
-        for (int i = 0; i < SCALE_CHANNELS; ++i)
+        for (int i = 0;
+             i < SCALE_CHANNELS;
+             ++i)
         {
             scale[i] = bb.getFloat();
-            sbs.append(" ").append(scale[i]);
+            sbs.append(" ")
+               .append(scale[i]);
         }
         Logger.logD(sbs.toString());
 

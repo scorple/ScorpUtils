@@ -46,7 +46,9 @@ public class VertexArray
     private int flags;
     private int format; // component format
     private int size; // number of components
-    private int offset; // offset to array of tightly packed components, with num_vertexes * size total entries
+    private int
+                offset;
+    // offset to array of tightly packed components, with num_vertexes * size total entries
     // offset must be aligned to max(sizeof(format), 4)
 
     //private byte[] buf;
@@ -56,11 +58,16 @@ public class VertexArray
 
     }
 
-    public void load(final Header header, final byte[] buf, final int index, final int num_vertexes)
+    public void load(final Header header,
+                     final byte[] buf,
+                     final int index,
+                     final int num_vertexes)
     {
         int offset = header.getOfsVertexArrays() + index * VERTEX_ARRAY_SIZE;
 
-        ByteBuffer bb = ByteBuffer.wrap(buf, offset, VERTEX_ARRAY_SIZE);
+        ByteBuffer bb = ByteBuffer.wrap(buf,
+                                        offset,
+                                        VERTEX_ARRAY_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         type = bb.getInt();

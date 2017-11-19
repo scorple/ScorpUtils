@@ -9,7 +9,8 @@ import java.net.ServerSocket;
  * @author Scorple
  * @since 2017-05-02
  */
-public class Server extends Dialog
+public class Server
+    extends Dialog
 {
     public Server(final IDialogListener listener)
     {
@@ -21,7 +22,8 @@ public class Server extends Dialog
         status("server started");
     }
 
-    private class ServerConnector extends Thread
+    private class ServerConnector
+        extends Thread
     {
         @Override
         public void run()

@@ -27,11 +27,15 @@ public class Pose
         channelScale = new float[NUM_CHANNELS];
     }
 
-    public void load(final Header header, final byte[] buf, final int index)
+    public void load(final Header header,
+                     final byte[] buf,
+                     final int index)
     {
         int offset = header.getOfsPoses() + index * POSE_SIZE;
 
-        ByteBuffer bb = ByteBuffer.wrap(buf, offset, POSE_SIZE);
+        ByteBuffer bb = ByteBuffer.wrap(buf,
+                                        offset,
+                                        POSE_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         parent = bb.getInt();
@@ -42,19 +46,25 @@ public class Pose
 
         StringBuilder sbo = new StringBuilder();
         sbo.append("co");
-        for (int i = 0; i < NUM_CHANNELS; ++i)
+        for (int i = 0;
+             i < NUM_CHANNELS;
+             ++i)
         {
             channelOffset[i] = bb.getFloat();
-            sbo.append(" ").append(channelOffset[i]);
+            sbo.append(" ")
+               .append(channelOffset[i]);
         }
         Logger.logD(sbo.toString());
 
         StringBuilder sbs = new StringBuilder();
         sbs.append("cs");
-        for (int i = 0; i < NUM_CHANNELS; ++i)
+        for (int i = 0;
+             i < NUM_CHANNELS;
+             ++i)
         {
             channelScale[i] = bb.getFloat();
-            sbs.append(" ").append(channelScale[i]);
+            sbs.append(" ")
+               .append(channelScale[i]);
         }
         Logger.logD(sbs.toString());
     }

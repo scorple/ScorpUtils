@@ -16,11 +16,13 @@ import java.net.Socket;
  */
 abstract class SocketUtils
 {
-    static int readUTF(final IReadListener listener, final Socket socket)
+    static int readUTF(final IReadListener listener,
+                       final Socket socket)
     {
         String[] in = new String[1];
 
-        int res = readUTF(socket, in);
+        int res = readUTF(socket,
+                          in);
 
         if (res >= 0)
         {
@@ -30,7 +32,8 @@ abstract class SocketUtils
         return res;
     }
 
-    static int readUTF(final Socket socket, final String[] out)
+    static int readUTF(final Socket socket,
+                       final String[] out)
     {
         Logger.logD("enter trace");
 
@@ -102,7 +105,8 @@ abstract class SocketUtils
         return -2;
     }
 
-    static int writeUTF(final Socket socket, final String out)
+    static int writeUTF(final Socket socket,
+                        final String out)
     {
         Logger.logD("enter trace");
 

@@ -18,7 +18,10 @@ public class InternetUtils
         try
         {
             URL            awsCheckIpUrl = new URL("http://checkip.amazonaws.com");
-            BufferedReader br            = new BufferedReader(new InputStreamReader(awsCheckIpUrl.openStream()));
+            BufferedReader
+                br
+                = new BufferedReader(new InputStreamReader(awsCheckIpUrl
+                                                               .openStream()));
             return br.readLine();
         }
         catch (IOException e)

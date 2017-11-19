@@ -18,8 +18,11 @@ public class ArrayUtils
         }
     }
 
-    public static void reverse(final byte[] array, final int offset, final int length)
-        throws IndexOutOfBoundsException
+    public static void reverse(final byte[] array,
+                               final int offset,
+                               final int length)
+        throws
+        IndexOutOfBoundsException
     {
         int head = offset;
         int tail = offset + length - 1;

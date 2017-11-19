@@ -25,14 +25,16 @@ public class TextLoader
         StringBuilder res = new StringBuilder();
         try
         {
-            InputStream    inputStream    = TextLoader.class.getClass().getResourceAsStream(fileName);
+            InputStream inputStream = TextLoader.class.getClass()
+                                                      .getResourceAsStream(fileName);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
 
             while ((line = bufferedReader.readLine()) != null)
             {
-                res.append(line).append('\n');
+                res.append(line)
+                   .append('\n');
             }
         }
         catch (IOException e)

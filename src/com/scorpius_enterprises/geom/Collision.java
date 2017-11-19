@@ -8,7 +8,8 @@ package com.scorpius_enterprises.geom;
  */
 abstract public class Collision
 {
-    static float getSurfaceDistance(Vector3f point, Triangle surface)
+    static float getSurfaceDistance(Vector3f point,
+                                    Triangle surface)
     {
 
 

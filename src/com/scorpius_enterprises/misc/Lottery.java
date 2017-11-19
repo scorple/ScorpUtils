@@ -22,7 +22,8 @@ public class Lottery
               .forEachOrdered(key ->
                               {
                                   totalTickets[0] += values.get(key);
-                                  adjustedValues.put(key, totalTickets[0]);
+                                  adjustedValues.put(key,
+                                                     totalTickets[0]);
                               });
 
         int ticket = (int) (Math.random() * totalTickets[0]);
@@ -36,7 +37,8 @@ public class Lottery
                                  .filter(key ->
                                              ticket <= adjustedValues.get(key) - values.get(key) &&
                                              ticket < adjustedValues.get(key))
-                                 .findFirst().get();
+                                 .findFirst()
+                                 .get();
         }
         catch (NoSuchElementException x)
         {
@@ -45,7 +47,8 @@ public class Lottery
     }
 
     @Nullable
-    public static String performLottery(final String[] keys, final int[] values)
+    public static String performLottery(final String[] keys,
+                                        final int[] values)
     {
         if (keys.length != values.length)
         {
@@ -55,7 +58,9 @@ public class Lottery
         int   totalTickets = 0;
         int[] offsetValues = new int[values.length];
 
-        for (int i = 0; i < keys.length; ++i)
+        for (int i = 0;
+             i < keys.length;
+             ++i)
         {
             totalTickets += values[i];
             offsetValues[i] = totalTickets;
@@ -63,7 +68,9 @@ public class Lottery
 
         int ticket = (int) (Math.random() * totalTickets);
 
-        for (int i = 0; i < keys.length; ++i)
+        for (int i = 0;
+             i < keys.length;
+             ++i)
         {
             if (ticket < offsetValues[i])
             {

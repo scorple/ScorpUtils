@@ -1,20 +1,22 @@
 package com.scorpius_enterprises.io;
 
 import com.scorpius_enterprises.log.Logger;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.stream.IntStream;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * {@link DaeLoader com.scorpius_enterprises.io.DaeLoader}
@@ -58,12 +60,15 @@ public class DaeLoader
 
         SAXParserFactory factory = SAXParserFactory.newInstance();
 
-        File file = new File(DaeLoader.class.getClass().getResource(fileName).getFile());
+        File file = new File(DaeLoader.class.getClass()
+                                            .getResource(fileName)
+                                            .getFile());
 
         try
         {
             SAXParser parser = factory.newSAXParser();
-            parser.parse(file, new DAEElementHandler());
+            parser.parse(file,
+                         new DAEElementHandler());
         }
         catch (ParserConfigurationException e)
         {
@@ -89,7 +94,8 @@ public class DaeLoader
 
         if (normalVecComps.size() > 0)
         {
-            normalVecCompsInVertexOrder = new Float[normalVecCompsByPosIndex.size() * NORMAL_VECTOR_SIZE];
+            normalVecCompsInVertexOrder = new Float[normalVecCompsByPosIndex.size()
+                                                    * NORMAL_VECTOR_SIZE];
         }
 
         try
@@ -101,14 +107,17 @@ public class DaeLoader
                 texCoordsByPosIndex.keySet()
                                    .stream()
                                    .parallel()
-                                   .forEach(vertexIndex -> IntStream.range(0, TEXTURE_POSITION_SIZE)
+                                   .forEach(vertexIndex -> IntStream.range(0,
+                                                                           TEXTURE_POSITION_SIZE)
                                                                     .parallel()
                                                                     .forEach(
                                                                         texCoordIndex ->
                                                                             finalTexCoordsInVertexOrder[
                                                                                 vertexIndex *
-                                                                                TEXTURE_POSITION_SIZE +
-                                                                                texCoordIndex] =
+                                                                                TEXTURE_POSITION_SIZE
+                                                                                +
+                                                                                texCoordIndex]
+                                                                                =
                                                                                 texCoordsByPosIndex
                                                                                     .get(
                                                                                         vertexIndex)[texCoordIndex]));
@@ -121,13 +130,18 @@ public class DaeLoader
                 normalVecCompsByPosIndex.keySet()
                                         .stream()
                                         .parallel()
-                                        .forEach(vertexIndex -> IntStream.range(0, NORMAL_VECTOR_SIZE)
+                                        .forEach(vertexIndex -> IntStream.range(0,
+                                                                                NORMAL_VECTOR_SIZE)
                                                                          .parallel()
-                                                                         .forEach(normalCoordIndex ->
+                                                                         .forEach
+                                                                             (normalCoordIndex ->
                                                                                       finalNormalsInVertexOrder[
-                                                                                          vertexIndex *
-                                                                                          NORMAL_VECTOR_SIZE +
-                                                                                          normalCoordIndex] =
+                                                                                          vertexIndex
+                                                                                          *
+                                                                                          NORMAL_VECTOR_SIZE
+                                                                                          +
+                                                                                          normalCoordIndex]
+                                                                                          =
                                                                                           normalVecCompsByPosIndex.get(
                                                                                               vertexIndex)[normalCoordIndex]));
             }
@@ -148,7 +162,10 @@ public class DaeLoader
             //Logger.logD("" + posCoords.size());
 
             posCoordArray[0] = new float[posCoords.size()];
-            IntStream.range(0, posCoordArray[0].length).parallel().forEach(i -> posCoordArray[0][i] = posCoords.get(i));
+            IntStream.range(0,
+                            posCoordArray[0].length)
+                     .parallel()
+                     .forEach(i -> posCoordArray[0][i] = posCoords.get(i));
         }
         if (texCoordArray != null)
         {
@@ -158,7 +175,8 @@ public class DaeLoader
 
                 texCoordArray[0] = new float[texCoordsInVertexOrder.length];
                 Float[] finalTexCoordsInVertexOrder1 = texCoordsInVertexOrder;
-                IntStream.range(0, texCoordArray[0].length)
+                IntStream.range(0,
+                                texCoordArray[0].length)
                          .parallel()
                          .forEach(i -> texCoordArray[0][i] = finalTexCoordsInVertexOrder1[i]);
             }
@@ -175,7 +193,8 @@ public class DaeLoader
 
                 normalVecCompArray[0] = new float[normalVecCompsInVertexOrder.length];
                 Float[] finalNormalsInVertexOrder1 = normalVecCompsInVertexOrder;
-                IntStream.range(0, normalVecCompArray[0].length)
+                IntStream.range(0,
+                                normalVecCompArray[0].length)
                          .parallel()
                          .forEach(i -> normalVecCompArray[0][i] = finalNormalsInVertexOrder1[i]);
             }
@@ -189,13 +208,15 @@ public class DaeLoader
             //Logger.logD("" + indices.size());
 
             vertexIndexArray[0] = new int[indices.size()];
-            IntStream.range(0, vertexIndexArray[0].length)
+            IntStream.range(0,
+                            vertexIndexArray[0].length)
                      .parallel()
                      .forEach(i -> vertexIndexArray[0][i] = indices.get(i));
         }
     }
 
-    private static class DAEElementHandler extends DefaultHandler
+    private static class DAEElementHandler
+        extends DefaultHandler
     {
         private static boolean foundMesh  = false;
         private static boolean foundArray = false;
@@ -212,31 +233,45 @@ public class DaeLoader
         }
 
         @Override
-        public void startDocument() throws SAXException
+        public void startDocument()
+            throws
+            SAXException
         {
 
         }
 
         @Override
-        public void endDocument() throws SAXException
+        public void endDocument()
+            throws
+            SAXException
         {
 
         }
 
         @Override
-        public void startPrefixMapping(String prefix, String uri) throws SAXException
+        public void startPrefixMapping(String prefix,
+                                       String uri)
+            throws
+            SAXException
         {
 
         }
 
         @Override
-        public void endPrefixMapping(String prefix) throws SAXException
+        public void endPrefixMapping(String prefix)
+            throws
+            SAXException
         {
 
         }
 
         @Override
-        public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException
+        public void startElement(String uri,
+                                 String localName,
+                                 String qName,
+                                 Attributes atts)
+            throws
+            SAXException
         {
             //Logger.logD(qName);
 
@@ -251,7 +286,8 @@ public class DaeLoader
 
             if (foundArray)
             {
-                String id = atts.getValue(uri, "id");
+                String id = atts.getValue(uri,
+                                          "id");
 
                 if (id != null)
                 {
@@ -276,7 +312,11 @@ public class DaeLoader
         }
 
         @Override
-        public void endElement(String uri, String localName, String qName) throws SAXException
+        public void endElement(String uri,
+                               String localName,
+                               String qName)
+            throws
+            SAXException
         {
             //Logger.logD(qName);
 
@@ -287,34 +327,46 @@ public class DaeLoader
         }
 
         @Override
-        public void characters(char[] ch, int start, int length) throws SAXException
+        public void characters(char[] ch,
+                               int start,
+                               int length)
+            throws
+            SAXException
         {
             if (foundArray)
             {
                 if (foundPositions)
                 {
-                    String string = new String(ch, start, length);
+                    String string = new String(ch,
+                                               start,
+                                               length);
 
                     //Logger.logD(string);
 
                     String[] splitString = string.split(" ");
 
-                    IntStream.range(0, splitString.length / 3).map(i -> i * 3).parallel().forEachOrdered(i ->
-                                                                                                         {
-                                                                                                             posCoords.add(
-                                                                                                                 Float.parseFloat(
-                                                                                                                     splitString[i]));
-                                                                                                             posCoords.add(
-                                                                                                                 Float.parseFloat(
-                                                                                                                     splitString[
-                                                                                                                         i +
-                                                                                                                         2]));
-                                                                                                             posCoords.add(
-                                                                                                                 -Float.parseFloat(
-                                                                                                                     splitString[
-                                                                                                                         i +
-                                                                                                                         1]));
-                                                                                                         });
+                    IntStream.range(0,
+                                    splitString.length / 3)
+                             .map(i -> i * 3)
+                             .parallel()
+                             .forEachOrdered(i ->
+                                             {
+                                                 posCoords.add(
+                                                     Float.parseFloat(
+                                                         splitString[i]));
+                                                 posCoords.add(
+                                                     Float.parseFloat(
+                                                         splitString[
+                                                             i
+                                                             +
+                                                             2]));
+                                                 posCoords.add(
+                                                     -Float.parseFloat(
+                                                         splitString[
+                                                             i
+                                                             +
+                                                             1]));
+                                             });
 
                     //Logger.logD("" + posCoords.size());
 
@@ -322,12 +374,16 @@ public class DaeLoader
                 }
                 else if (foundNormals)
                 {
-                    String string = new String(ch, start, length);
+                    String string = new String(ch,
+                                               start,
+                                               length);
 
                     //Logger.logD(string);
 
                     String[] splitString = string.split(" ");
-                    Arrays.stream(splitString).parallel().forEachOrdered(s -> normalVecComps.add(Float.parseFloat(s)));
+                    Arrays.stream(splitString)
+                          .parallel()
+                          .forEachOrdered(s -> normalVecComps.add(Float.parseFloat(s)));
 
                     //Logger.logD("" + normalVecComps.size());
 
@@ -335,24 +391,32 @@ public class DaeLoader
                 }
                 else if (foundMap)
                 {
-                    String string = new String(ch, start, length);
+                    String string = new String(ch,
+                                               start,
+                                               length);
 
                     //Logger.logD(string);
 
                     String[] splitString = string.split(" ");
 
-                    IntStream.range(0, splitString.length / 2).map(i -> i * 2).parallel().forEachOrdered(i ->
-                                                                                                         {
-                                                                                                             texCoords.add(
-                                                                                                                 Float.parseFloat(
-                                                                                                                     splitString[i]));
-                                                                                                             texCoords.add(
-                                                                                                                 1.0f -
-                                                                                                                 Float.parseFloat(
-                                                                                                                     splitString[
-                                                                                                                         i +
-                                                                                                                         1]));
-                                                                                                         });
+                    IntStream.range(0,
+                                    splitString.length / 2)
+                             .map(i -> i * 2)
+                             .parallel()
+                             .forEachOrdered(i ->
+                                             {
+                                                 texCoords.add(
+                                                     Float.parseFloat(
+                                                         splitString[i]));
+                                                 texCoords.add(
+                                                     1.0f
+                                                     -
+                                                     Float.parseFloat(
+                                                         splitString[
+                                                             i
+                                                             +
+                                                             1]));
+                                             });
 
                     //Logger.logD("" + texCoords.size());
 
@@ -360,7 +424,9 @@ public class DaeLoader
                 }
                 else if (foundIndices)
                 {
-                    String string = new String(ch, start, length);
+                    String string = new String(ch,
+                                               start,
+                                               length);
 
                     //Logger.logD(string);
 
@@ -370,116 +436,146 @@ public class DaeLoader
                     final int[] ni = new int[3];
                     final int[] ti = new int[3];
 
-                    IntStream.range(0, splitString.length / 9).map(i -> i * 9).parallel().forEachOrdered(i ->
-                                                                                                         {
-                                                                                                             IntStream.range(
-                                                                                                                 0,
-                                                                                                                 3)
-                                                                                                                      .parallel()
-                                                                                                                      .forEach(
-                                                                                                                          j ->
-                                                                                                                          {
-                                                                                                                              pi[j] =
-                                                                                                                                  Integer
-                                                                                                                                      .parseInt(
-                                                                                                                                          splitString[
-                                                                                                                                              i +
-                                                                                                                                              j *
-                                                                                                                                              3]);
-                                                                                                                              ni[j] =
-                                                                                                                                  Integer
-                                                                                                                                      .parseInt(
-                                                                                                                                          splitString[
-                                                                                                                                              i +
-                                                                                                                                              j *
-                                                                                                                                              3 +
-                                                                                                                                              1]);
-                                                                                                                              ti[j] =
-                                                                                                                                  Integer
-                                                                                                                                      .parseInt(
-                                                                                                                                          splitString[
-                                                                                                                                              i +
-                                                                                                                                              j *
-                                                                                                                                              3 +
-                                                                                                                                              2]);
-                                                                                                                          });
+                    IntStream.range(0,
+                                    splitString.length / 9)
+                             .map(i -> i * 9)
+                             .parallel()
+                             .forEachOrdered(i ->
+                                             {
+                                                 IntStream.range(
+                                                     0,
+                                                     3)
+                                                          .parallel()
+                                                          .forEach(
+                                                              j ->
+                                                              {
+                                                                  pi[j] =
+                                                                      Integer
+                                                                          .parseInt(
+                                                                              splitString[
+                                                                                  i
+                                                                                  +
+                                                                                  j
+                                                                                  *
+                                                                                  3]);
+                                                                  ni[j] =
+                                                                      Integer
+                                                                          .parseInt(
+                                                                              splitString[
+                                                                                  i
+                                                                                  +
+                                                                                  j
+                                                                                  *
+                                                                                  3
+                                                                                  +
+                                                                                  1]);
+                                                                  ti[j] =
+                                                                      Integer
+                                                                          .parseInt(
+                                                                              splitString[
+                                                                                  i
+                                                                                  +
+                                                                                  j
+                                                                                  *
+                                                                                  3
+                                                                                  +
+                                                                                  2]);
+                                                              });
 
-                                                                                                             IntStream.range(
-                                                                                                                 0,
-                                                                                                                 3)
-                                                                                                                      .parallel()
-                                                                                                                      .forEachOrdered(
-                                                                                                                          j ->
-                                                                                                                          {
-                                                                                                                              //Logger.logD(pi[j] + " " + ni[j] + " " + ti[j]);
+                                                 IntStream.range(
+                                                     0,
+                                                     3)
+                                                          .parallel()
+                                                          .forEachOrdered(
+                                                              j ->
+                                                              {
+                                                                  //Logger.logD(pi[j] + " " +
+                                                                  // ni[j] + " " + ti[j]);
 
-                                                                                                                              if (indices
-                                                                                                                                  .contains(
-                                                                                                                                      pi[j]))
-                                                                                                                              {
-                                                                                                                                  int
-                                                                                                                                      nextIndexTripleStartIndex =
-                                                                                                                                      pi[j] *
-                                                                                                                                      POSITION_SIZE;
+                                                                  if (indices
+                                                                      .contains(
+                                                                          pi[j]))
+                                                                  {
+                                                                      int
+                                                                          nextIndexTripleStartIndex
+                                                                          =
+                                                                          pi[j]
+                                                                          *
+                                                                          POSITION_SIZE;
 
-                                                                                                                                  IntStream
-                                                                                                                                      .range(
-                                                                                                                                          0,
-                                                                                                                                          3)
-                                                                                                                                      .parallel()
-                                                                                                                                      .forEachOrdered(
-                                                                                                                                          k -> posCoords
-                                                                                                                                              .add(
-                                                                                                                                                  posCoords
-                                                                                                                                                      .get(
-                                                                                                                                                          nextIndexTripleStartIndex +
-                                                                                                                                                          k)));
+                                                                      IntStream
+                                                                          .range(
+                                                                              0,
+                                                                              3)
+                                                                          .parallel()
+                                                                          .forEachOrdered(
+                                                                              k -> posCoords
+                                                                                  .add(
+                                                                                      posCoords
+                                                                                          .get(
+                                                                                              nextIndexTripleStartIndex
+                                                                                              +
+                                                                                              k)));
 
-                                                                                                                                  pi[j] =
-                                                                                                                                      (posCoords
-                                                                                                                                           .size() /
-                                                                                                                                       3) -
-                                                                                                                                      1;
-                                                                                                                              }
+                                                                      pi[j] =
+                                                                          (posCoords
+                                                                               .size() /
+                                                                           3)
+                                                                          -
+                                                                          1;
+                                                                  }
 
-                                                                                                                              indices
-                                                                                                                                  .add(
-                                                                                                                                      pi[j]);
+                                                                  indices
+                                                                      .add(
+                                                                          pi[j]);
 
-                                                                                                                              if (texCoords
-                                                                                                                                      .size() >
-                                                                                                                                  0)
-                                                                                                                              {
-                                                                                                                                  texCoordsByPosIndex
-                                                                                                                                      .put(
-                                                                                                                                          pi[j],
-                                                                                                                                          new float[]{texCoords.get(
-                                                                                                                                              ti[j] *
-                                                                                                                                              TEXTURE_POSITION_SIZE), texCoords.get(
-                                                                                                                                              ti[j] *
-                                                                                                                                              TEXTURE_POSITION_SIZE +
-                                                                                                                                              1)});
-                                                                                                                              }
+                                                                  if (texCoords
+                                                                          .size() >
+                                                                      0)
+                                                                  {
+                                                                      texCoordsByPosIndex
+                                                                          .put(
+                                                                              pi[j],
+                                                                              new float[]{texCoords.get(
+                                                                                  ti[j]
+                                                                                  *
+                                                                                  TEXTURE_POSITION_SIZE),
+                                                                                          texCoords.get(
+                                                                                              ti[j]
+                                                                                              *
+                                                                                              TEXTURE_POSITION_SIZE
+                                                                                              +
+                                                                                              1)});
+                                                                  }
 
-                                                                                                                              if (normalVecComps
-                                                                                                                                      .size() >
-                                                                                                                                  0)
-                                                                                                                              {
-                                                                                                                                  normalVecCompsByPosIndex
-                                                                                                                                      .put(
-                                                                                                                                          pi[j],
-                                                                                                                                          new float[]{normalVecComps.get(
-                                                                                                                                              ni[j] *
-                                                                                                                                              NORMAL_VECTOR_SIZE), normalVecComps.get(
-                                                                                                                                              ni[j] *
-                                                                                                                                              NORMAL_VECTOR_SIZE +
-                                                                                                                                              1), normalVecComps.get(
-                                                                                                                                              ni[j] *
-                                                                                                                                              NORMAL_VECTOR_SIZE +
-                                                                                                                                              2)});
-                                                                                                                              }
-                                                                                                                          });
-                                                                                                         });
+                                                                  if (normalVecComps
+                                                                          .size() >
+                                                                      0)
+                                                                  {
+                                                                      normalVecCompsByPosIndex
+                                                                          .put(
+                                                                              pi[j],
+                                                                              new float[]{
+                                                                                  normalVecComps
+                                                                                      .get(
+                                                                                      ni[j]
+                                                                                      *
+                                                                                      NORMAL_VECTOR_SIZE),
+                                                                                  normalVecComps
+                                                                                      .get(
+                                                                                      ni[j] *
+                                                                                      NORMAL_VECTOR_SIZE
+                                                                                      +
+                                                                                      1),
+                                                                                  normalVecComps
+                                                                                      .get(
+                                                                                      ni[j] *
+                                                                                      NORMAL_VECTOR_SIZE
+                                                                                      +
+                                                                                      2)});
+                                                                  }
+                                                              });
+                                             });
 
                     foundIndices = false;
                 }
@@ -488,25 +584,35 @@ public class DaeLoader
         }
 
         @Override
-        public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException
+        public void ignorableWhitespace(char[] ch,
+                                        int start,
+                                        int length)
+            throws
+            SAXException
         {
 
         }
 
         @Override
-        public void processingInstruction(String target, String data) throws SAXException
+        public void processingInstruction(String target,
+                                          String data)
+            throws
+            SAXException
         {
 
         }
 
         @Override
-        public void skippedEntity(String name) throws SAXException
+        public void skippedEntity(String name)
+            throws
+            SAXException
         {
 
         }
     }
 
-    private static class SAXTerminatorException extends SAXException
+    private static class SAXTerminatorException
+        extends SAXException
     {
 
     }

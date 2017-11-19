@@ -46,9 +46,11 @@ public class Logger
 
             STACK_TRACE_DEPTH = 3;
 
-            processLog(Thread.currentThread().getStackTrace(),
+            processLog(Thread.currentThread()
+                             .getStackTrace(),
                        E_TYPE.WARNING,
-                       "attempt to log or configure without initializing, created Logger instance with LOG_LEVEL 0");
+                       "attempt to log or configure without initializing, created Logger instance"
+                       + " with LOG_LEVEL 0");
 
             STACK_TRACE_DEPTH = 2;
         }
@@ -100,13 +102,15 @@ public class Logger
     {
         checkInstance();
 
-        Arrays.stream(tags).parallel().forEachOrdered(tag ->
-                                                      {
-                                                          if (!REGISTERED_TAGS.contains(tag))
-                                                          {
-                                                              Logger.REGISTERED_TAGS.add(tag);
-                                                          }
-                                                      });
+        Arrays.stream(tags)
+              .parallel()
+              .forEachOrdered(tag ->
+                              {
+                                  if (!REGISTERED_TAGS.contains(tag))
+                                  {
+                                      Logger.REGISTERED_TAGS.add(tag);
+                                  }
+                              });
     }
 
     /**
@@ -120,13 +124,15 @@ public class Logger
     {
         checkInstance();
 
-        tags.stream().parallel().forEachOrdered(tag ->
-                                                {
-                                                    if (!REGISTERED_TAGS.contains(tag))
-                                                    {
-                                                        Logger.REGISTERED_TAGS.add(tag);
-                                                    }
-                                                });
+        tags.stream()
+            .parallel()
+            .forEachOrdered(tag ->
+                            {
+                                if (!REGISTERED_TAGS.contains(tag))
+                                {
+                                    Logger.REGISTERED_TAGS.add(tag);
+                                }
+                            });
     }
 
     /**
@@ -157,13 +163,15 @@ public class Logger
     {
         checkInstance();
 
-        Arrays.stream(tags).parallel().forEachOrdered(tag ->
-                                                      {
-                                                          if (REGISTERED_TAGS.contains(tag))
-                                                          {
-                                                              Logger.REGISTERED_TAGS.remove(tag);
-                                                          }
-                                                      });
+        Arrays.stream(tags)
+              .parallel()
+              .forEachOrdered(tag ->
+                              {
+                                  if (REGISTERED_TAGS.contains(tag))
+                                  {
+                                      Logger.REGISTERED_TAGS.remove(tag);
+                                  }
+                              });
     }
 
     /**
@@ -177,13 +185,15 @@ public class Logger
     {
         checkInstance();
 
-        tags.stream().parallel().forEachOrdered(tag ->
-                                                {
-                                                    if (REGISTERED_TAGS.contains(tag))
-                                                    {
-                                                        Logger.REGISTERED_TAGS.remove(tag);
-                                                    }
-                                                });
+        tags.stream()
+            .parallel()
+            .forEachOrdered(tag ->
+                            {
+                                if (REGISTERED_TAGS.contains(tag))
+                                {
+                                    Logger.REGISTERED_TAGS.remove(tag);
+                                }
+                            });
     }
 
     /**
@@ -212,13 +222,15 @@ public class Logger
     {
         checkInstance();
 
-        Arrays.stream(types).parallel().forEachOrdered(type ->
-                                                       {
-                                                           if (!DISABLED_TYPES.contains(type))
-                                                           {
-                                                               DISABLED_TYPES.add(type);
-                                                           }
-                                                       });
+        Arrays.stream(types)
+              .parallel()
+              .forEachOrdered(type ->
+                              {
+                                  if (!DISABLED_TYPES.contains(type))
+                                  {
+                                      DISABLED_TYPES.add(type);
+                                  }
+                              });
     }
 
     /**
@@ -232,13 +244,15 @@ public class Logger
     {
         checkInstance();
 
-        types.stream().parallel().forEachOrdered(type ->
-                                                 {
-                                                     if (!DISABLED_TYPES.contains(type))
-                                                     {
-                                                         DISABLED_TYPES.add(type);
-                                                     }
-                                                 });
+        types.stream()
+             .parallel()
+             .forEachOrdered(type ->
+                             {
+                                 if (!DISABLED_TYPES.contains(type))
+                                 {
+                                     DISABLED_TYPES.add(type);
+                                 }
+                             });
     }
 
     /**
@@ -267,13 +281,15 @@ public class Logger
     {
         checkInstance();
 
-        Arrays.stream(types).parallel().forEachOrdered(type ->
-                                                       {
-                                                           if (DISABLED_TYPES.contains(type))
-                                                           {
-                                                               DISABLED_TYPES.remove(type);
-                                                           }
-                                                       });
+        Arrays.stream(types)
+              .parallel()
+              .forEachOrdered(type ->
+                              {
+                                  if (DISABLED_TYPES.contains(type))
+                                  {
+                                      DISABLED_TYPES.remove(type);
+                                  }
+                              });
     }
 
     /**
@@ -286,19 +302,22 @@ public class Logger
     {
         checkInstance();
 
-        types.stream().parallel().forEachOrdered(type ->
-                                                 {
-                                                     if (DISABLED_TYPES.contains(type))
-                                                     {
-                                                         DISABLED_TYPES.remove(type);
-                                                     }
-                                                 });
+        types.stream()
+             .parallel()
+             .forEachOrdered(type ->
+                             {
+                                 if (DISABLED_TYPES.contains(type))
+                                 {
+                                     DISABLED_TYPES.remove(type);
+                                 }
+                             });
     }
 
     private static String getClassName(final StackTraceElement[] stackTrace)
     {
         String[] splitClassName =
-            stackTrace[STACK_TRACE_DEPTH].getClassName().split("\\.");
+            stackTrace[STACK_TRACE_DEPTH].getClassName()
+                                         .split("\\.");
         return splitClassName[splitClassName.length - 1];
     }
 
@@ -361,7 +380,9 @@ public class Logger
                                    final String tag)
     {
         if (!DISABLED_TYPES.contains(type) &&
-            REGISTERED_TAGS.stream().parallel().anyMatch(e_tag -> e_tag.equals(tag)))
+            REGISTERED_TAGS.stream()
+                           .parallel()
+                           .anyMatch(e_tag -> e_tag.equals(tag)))
         {
             postLog(stackTrace,
                     type.toString() + SPLIT + tag,
@@ -376,7 +397,9 @@ public class Logger
                                    final int level)
     {
         if (!DISABLED_TYPES.contains(type) && LOG_LEVEL >= level &&
-            REGISTERED_TAGS.stream().parallel().anyMatch(e_tag -> e_tag.equals(tag)))
+            REGISTERED_TAGS.stream()
+                           .parallel()
+                           .anyMatch(e_tag -> e_tag.equals(tag)))
         {
             postLog(stackTrace,
                     type.toString() + SPLIT + level + SPLIT + tag,
@@ -396,7 +419,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.GENERAL,
                    log);
     }
@@ -418,7 +442,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.GENERAL,
                    log,
                    level);
@@ -443,7 +468,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.GENERAL,
                    log,
                    tag);
@@ -475,7 +501,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.GENERAL,
                    log,
                    tag,
@@ -495,7 +522,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.INFO,
                    log);
     }
@@ -518,7 +546,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.INFO,
                    log,
                    level);
@@ -544,7 +573,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.INFO,
                    log,
                    tag);
@@ -577,7 +607,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.INFO,
                    log,
                    tag,
@@ -597,7 +628,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.DEBUG,
                    log);
     }
@@ -620,7 +652,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.DEBUG,
                    log,
                    level);
@@ -646,7 +679,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.DEBUG,
                    log,
                    tag);
@@ -679,7 +713,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.DEBUG,
                    log,
                    tag,
@@ -699,7 +734,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.WARNING,
                    log);
     }
@@ -722,7 +758,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.WARNING,
                    log,
                    level);
@@ -748,7 +785,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.WARNING,
                    log,
                    tag);
@@ -781,7 +819,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.WARNING,
                    log,
                    tag,
@@ -800,7 +839,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.ERROR,
                    log);
     }
@@ -822,7 +862,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.ERROR,
                    log,
                    level);
@@ -847,7 +888,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.ERROR,
                    log,
                    tag);
@@ -879,7 +921,8 @@ public class Logger
     {
         checkInstance();
 
-        processLog(Thread.currentThread().getStackTrace(),
+        processLog(Thread.currentThread()
+                         .getStackTrace(),
                    E_TYPE.ERROR,
                    log,
                    tag,

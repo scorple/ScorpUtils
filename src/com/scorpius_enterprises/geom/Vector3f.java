@@ -19,7 +19,9 @@ public class Vector3f
         z = 0;
     }
 
-    public Vector3f(final float x, final float y, final float z)
+    public Vector3f(final float x,
+                    final float y,
+                    final float z)
     {
         this.x = x;
         this.y = y;
@@ -63,17 +65,20 @@ public class Vector3f
 
     public float getDistance(final Vector3f other)
     {
-        return getDistance(this, other);
+        return getDistance(this,
+                           other);
     }
 
     public Vector3f getDelta(final Vector3f other)
     {
-        return getDelta(this, other);
+        return getDelta(this,
+                        other);
     }
 
     public Vector3f crossProduct(final Vector3f other)
     {
-        return crossProduct(this, other);
+        return crossProduct(this,
+                            other);
     }
 
     public static float getLength(final Vector3f vector)
@@ -85,12 +90,15 @@ public class Vector3f
         return (float) Math.sqrt((x * x) + (y * y) + (z * z));
     }
 
-    public static float getDistance(final Vector3f vec1, final Vector3f vec2)
+    public static float getDistance(final Vector3f vec1,
+                                    final Vector3f vec2)
     {
-        return getLength(getDelta(vec1, vec2));
+        return getLength(getDelta(vec1,
+                                  vec2));
     }
 
-    public static Vector3f getDelta(final Vector3f vec1, final Vector3f vec2)
+    public static Vector3f getDelta(final Vector3f vec1,
+                                    final Vector3f vec2)
     {
         Vector3f res = new Vector3f();
 
@@ -101,7 +109,8 @@ public class Vector3f
         return res;
     }
 
-    public static Vector3f crossProduct(final Vector3f vec1, final Vector3f vec2)
+    public static Vector3f crossProduct(final Vector3f vec1,
+                                        final Vector3f vec2)
     {
         Vector3f res = new Vector3f();
 

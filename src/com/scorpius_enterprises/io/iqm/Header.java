@@ -71,7 +71,9 @@ public class Header
             String s  = new String(magicBuf);
             char[] ca = s.toCharArray();
 
-            for (int i = 0; i < MAGIC_SIZE; ++i)
+            for (int i = 0;
+                 i < MAGIC_SIZE;
+                 ++i)
             {
                 try
                 {

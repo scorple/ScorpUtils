@@ -9,9 +9,11 @@ import java.net.Socket;
  * @author Scorple
  * @since 2017-05-02
  */
-public class Client extends Dialog
+public class Client
+    extends Dialog
 {
-    public Client(final IDialogListener listener, final String serverAddress)
+    public Client(final IDialogListener listener,
+                  final String serverAddress)
     {
         this.listener = listener;
 
@@ -21,7 +23,8 @@ public class Client extends Dialog
         status("client started");
     }
 
-    private class ClientConnector extends Thread
+    private class ClientConnector
+        extends Thread
     {
         private String serverAddress;
 
@@ -35,7 +38,8 @@ public class Client extends Dialog
         {
             try
             {
-                socket = new Socket(serverAddress, NetworkConstants.SOCKET);
+                socket = new Socket(serverAddress,
+                                    NetworkConstants.SOCKET);
 
                 status("connected to server");
 

@@ -15,9 +15,13 @@ public class Vertex3f
         position = new Vector3f();
     }
 
-    public Vertex3f(final float x, final float y, final float z)
+    public Vertex3f(final float x,
+                    final float y,
+                    final float z)
     {
-        position = new Vector3f(x, y, z);
+        position = new Vector3f(x,
+                                y,
+                                z);
     }
 
     public Vector3f getPosition()

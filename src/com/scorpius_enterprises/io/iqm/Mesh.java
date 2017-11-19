@@ -28,11 +28,15 @@ public class Mesh
 
     }
 
-    public void load(final Header header, final byte[] buf, final int index)
+    public void load(final Header header,
+                     final byte[] buf,
+                     final int index)
     {
         int offset = header.getOfsMeshes() + index * MESH_SIZE;
 
-        ByteBuffer bb = ByteBuffer.wrap(buf, offset, MESH_SIZE);
+        ByteBuffer bb = ByteBuffer.wrap(buf,
+                                        offset,
+                                        MESH_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
         name = bb.getInt();

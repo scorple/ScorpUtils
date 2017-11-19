@@ -19,7 +19,9 @@ public class Triangle
         c = new Vertex3f();
     }
 
-    public Triangle(final Vertex3f a, final Vertex3f b, final Vertex3f c)
+    public Triangle(final Vertex3f a,
+                    final Vertex3f b,
+                    final Vertex3f c)
     {
         this.a = a;
         this.b = b;
@@ -76,9 +78,12 @@ public class Triangle
 
     public Vector3f getNormal()
     {
-        Vector3f a = Vector3f.getDelta(this.a.getPosition(), this.b.getPosition());
-        Vector3f b = Vector3f.getDelta(this.a.getPosition(), this.c.getPosition());
+        Vector3f a = Vector3f.getDelta(this.a.getPosition(),
+                                       this.b.getPosition());
+        Vector3f b = Vector3f.getDelta(this.a.getPosition(),
+                                       this.c.getPosition());
 
-        return Vector3f.crossProduct(a, b);
+        return Vector3f.crossProduct(a,
+                                     b);
     }
 }

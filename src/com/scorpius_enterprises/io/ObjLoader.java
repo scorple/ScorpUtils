@@ -74,139 +74,170 @@ public class ObjLoader
         String   objText  = TextLoader.loadTextFile(fileName);
         String[] splitObj = objText.split("\n");
 
-        Arrays.stream(splitObj).parallel().forEachOrdered(line ->
-                                                          {
-                                                              String[] splitLine = line.split(" ");
+        Arrays.stream(splitObj)
+              .parallel()
+              .forEachOrdered(line ->
+                              {
+                                  String[] splitLine = line.split(" ");
 
-                                                              switch (splitLine[0])
-                                                              {
-                                                                  case "v":
-                                                                      for (int i = 1; i < POSITION_SIZE + 1; ++i)
-                                                                      {
-                                                                          posCoords.add(Float.parseFloat(splitLine[i]));
-                                                                      }
-                                                                      break;
-                                                                  case "vt":
-                                                                      texCoords.add(Float.parseFloat(splitLine[1]));
-                                                                      texCoords.add(
-                                                                          1.0f - Float.parseFloat(splitLine[2]));
-                                                                      break;
-                                                                  case "vn":
-                                                                      for (int i = 1; i < NORMAL_VECTOR_SIZE + 1; ++i)
-                                                                      {
-                                                                          normalVecComps.add(Float.parseFloat(splitLine[i]));
-                                                                      }
-                                                                      break;
-                                                                  case "f":
-                                                                      int[] vi = new int[3];
-                                                                      int[] ti = new int[3];
-                                                                      int[] ni = new int[3];
+                                  switch (splitLine[0])
+                                  {
+                                      case "v":
+                                          for (int i = 1;
+                                               i < POSITION_SIZE + 1;
+                                               ++i)
+                                          {
+                                              posCoords.add(Float.parseFloat(splitLine[i]));
+                                          }
+                                          break;
+                                      case "vt":
+                                          texCoords.add(Float.parseFloat(splitLine[1]));
+                                          texCoords.add(
+                                              1.0f - Float.parseFloat(splitLine[2]));
+                                          break;
+                                      case "vn":
+                                          for (int i = 1;
+                                               i < NORMAL_VECTOR_SIZE + 1;
+                                               ++i)
+                                          {
+                                              normalVecComps.add(Float.parseFloat(splitLine[i]));
+                                          }
+                                          break;
+                                      case "f":
+                                          int[] vi = new int[3];
+                                          int[] ti = new int[3];
+                                          int[] ni = new int[3];
 
-                                                                      IntStream.range(1, 4).parallel().forEach(i ->
-                                                                                                               {
-                                                                                                                   String
-                                                                                                                       triad
-                                                                                                                       [
-                                                                                                                       ] =
-                                                                                                                       splitLine[i]
-                                                                                                                           .split(
-                                                                                                                               "/");
-                                                                                                                   vi[3 -
-                                                                                                                      i] =
-                                                                                                                       Integer
-                                                                                                                           .parseInt(
-                                                                                                                               triad[0]) -
-                                                                                                                       1;
-                                                                                                                   if (!triad[1]
-                                                                                                                       .equals(
-                                                                                                                           ""))
-                                                                                                                   {
-                                                                                                                       ti[3 -
-                                                                                                                          i] =
-                                                                                                                           Integer
-                                                                                                                               .parseInt(
-                                                                                                                                   triad[1]) -
-                                                                                                                           1;
-                                                                                                                   }
-                                                                                                                   ni[3 -
-                                                                                                                      i] =
-                                                                                                                       Integer
-                                                                                                                           .parseInt(
-                                                                                                                               triad[2]) -
-                                                                                                                       1;
-                                                                                                               });
+                                          IntStream.range(1,
+                                                          4)
+                                                   .parallel()
+                                                   .forEach(i ->
+                                                            {
+                                                                String
+                                                                    triad
+                                                                    [
+                                                                    ]
+                                                                    =
+                                                                    splitLine[i]
+                                                                        .split(
+                                                                            "/");
+                                                                vi[3 -
+                                                                   i] =
+                                                                    Integer
+                                                                        .parseInt(
+                                                                            triad[0])
+                                                                    -
+                                                                    1;
+                                                                if (!triad[1]
+                                                                    .equals(
+                                                                        ""))
+                                                                {
+                                                                    ti[3 -
+                                                                       i] =
+                                                                        Integer
+                                                                            .parseInt(
+                                                                                triad[1])
+                                                                        -
+                                                                        1;
+                                                                }
+                                                                ni[3 -
+                                                                   i] =
+                                                                    Integer
+                                                                        .parseInt(
+                                                                            triad[2])
+                                                                    -
+                                                                    1;
+                                                            });
 
-                                                                      IntStream.range(0, 3)
-                                                                               .parallel()
-                                                                               .forEachOrdered(i ->
-                                                                                               {
-                                                                                                   if (indices
-                                                                                                       .contains(
-                                                                                                           vi[i]))
-                                                                                                   {
-                                                                                                       int
-                                                                                                           nextIndexTripleStartIndex =
-                                                                                                           vi[i] *
-                                                                                                           POSITION_SIZE;
+                                          IntStream.range(0,
+                                                          3)
+                                                   .parallel()
+                                                   .forEachOrdered(i ->
+                                                                   {
+                                                                       if (indices
+                                                                           .contains(
+                                                                               vi[i]))
+                                                                       {
+                                                                           int
+                                                                               nextIndexTripleStartIndex
+                                                                               =
+                                                                               vi[i]
+                                                                               *
+                                                                               POSITION_SIZE;
 
-                                                                                                       IntStream.range(0,
-                                                                                                                       3)
-                                                                                                                .parallel()
-                                                                                                                .forEachOrdered(
-                                                                                                                    j -> posCoords
-                                                                                                                        .add(
-                                                                                                                            posCoords
-                                                                                                                                .get(
-                                                                                                                                    nextIndexTripleStartIndex +
-                                                                                                                                    j)));
+                                                                           IntStream.range(0,
+                                                                                           3)
+                                                                                    .parallel()
+                                                                                    .forEachOrdered(
+                                                                                        j ->
+                                                                                            posCoords
+                                                                                                .add(
+                                                                                                    posCoords
+                                                                                                        .get(
+                                                                                                            nextIndexTripleStartIndex
+                                                                                                            +
+                                                                                                            j)));
 
-                                                                                                       vi[i] =
-                                                                                                           (posCoords
-                                                                                                                .size() /
-                                                                                                            3) -
-                                                                                                           1;
-                                                                                                   }
+                                                                           vi[i] =
+                                                                               (posCoords
+                                                                                    .size() /
+                                                                                3)
+                                                                               -
+                                                                               1;
+                                                                       }
 
-                                                                                                   indices.add(
-                                                                                                       vi[i]);
+                                                                       indices.add(
+                                                                           vi[i]);
 
-                                                                                                   if (texCoords
-                                                                                                           .size() >
-                                                                                                       0)
-                                                                                                   {
-                                                                                                       texCoordsByPosIndex
-                                                                                                           .put(
-                                                                                                               vi[i],
-                                                                                                               new float[]{texCoords.get(
-                                                                                                                   ti[i] *
-                                                                                                                   TEXTURE_POSITION_SIZE), texCoords.get(
-                                                                                                                   ti[i] *
-                                                                                                                   TEXTURE_POSITION_SIZE +
-                                                                                                                   1)});
-                                                                                                   }
+                                                                       if (texCoords
+                                                                               .size() >
+                                                                           0)
+                                                                       {
+                                                                           texCoordsByPosIndex
+                                                                               .put(
+                                                                                   vi[i],
+                                                                                   new float[]{
+                                                                                       texCoords
+                                                                                           .get(
+                                                                                           ti[i]
+                                                                                           *
+                                                                                           TEXTURE_POSITION_SIZE),
+                                                                                       texCoords
+                                                                                           .get(
+                                                                                           ti[i] *
+                                                                                           TEXTURE_POSITION_SIZE
+                                                                                           +
+                                                                                           1)});
+                                                                       }
 
-                                                                                                   if (normalVecComps
-                                                                                                           .size() >
-                                                                                                       0)
-                                                                                                   {
-                                                                                                       normalVecCompsByPosIndex
-                                                                                                           .put(
-                                                                                                               vi[i],
-                                                                                                               new float[]{normalVecComps.get(
-                                                                                                                   ni[i] *
-                                                                                                                   NORMAL_VECTOR_SIZE), normalVecComps.get(
-                                                                                                                   ni[i] *
-                                                                                                                   NORMAL_VECTOR_SIZE +
-                                                                                                                   1), normalVecComps.get(
-                                                                                                                   ni[i] *
-                                                                                                                   NORMAL_VECTOR_SIZE +
-                                                                                                                   2)});
-                                                                                                   }
-                                                                                               });
+                                                                       if (normalVecComps
+                                                                               .size() >
+                                                                           0)
+                                                                       {
+                                                                           normalVecCompsByPosIndex
+                                                                               .put(
+                                                                                   vi[i],
+                                                                                   new float[]{
+                                                                                       normalVecComps.get(
+                                                                                           ni[i]
+                                                                                           *
+                                                                                           NORMAL_VECTOR_SIZE),
+                                                                                       normalVecComps.get(
+                                                                                           ni[i] *
+                                                                                           NORMAL_VECTOR_SIZE
+                                                                                           +
+                                                                                           1),
+                                                                                       normalVecComps.get(
+                                                                                           ni[i] *
+                                                                                           NORMAL_VECTOR_SIZE
+                                                                                           +
+                                                                                           2)});
+                                                                       }
+                                                                   });
 
-                                                                      break;
-                                                              }
-                                                          });
+                                          break;
+                                  }
+                              });
 
         if (texCoords.size() > 0)
         {
@@ -215,7 +246,8 @@ public class ObjLoader
 
         if (normalVecComps.size() > 0)
         {
-            normalVecCompsInVertexOrder = new Float[normalVecCompsByPosIndex.size() * NORMAL_VECTOR_SIZE];
+            normalVecCompsInVertexOrder = new Float[normalVecCompsByPosIndex.size()
+                                                    * NORMAL_VECTOR_SIZE];
         }
 
         try
@@ -227,14 +259,17 @@ public class ObjLoader
                 texCoordsByPosIndex.keySet()
                                    .stream()
                                    .parallel()
-                                   .forEach(vertexIndex -> IntStream.range(0, TEXTURE_POSITION_SIZE)
+                                   .forEach(vertexIndex -> IntStream.range(0,
+                                                                           TEXTURE_POSITION_SIZE)
                                                                     .parallel()
                                                                     .forEach(
                                                                         texCoordIndex ->
                                                                             finalTexCoordsInVertexOrder[
                                                                                 vertexIndex *
-                                                                                TEXTURE_POSITION_SIZE +
-                                                                                texCoordIndex] =
+                                                                                TEXTURE_POSITION_SIZE
+                                                                                +
+                                                                                texCoordIndex]
+                                                                                =
                                                                                 texCoordsByPosIndex
                                                                                     .get(
                                                                                         vertexIndex)[texCoordIndex]));
@@ -247,13 +282,18 @@ public class ObjLoader
                 normalVecCompsByPosIndex.keySet()
                                         .stream()
                                         .parallel()
-                                        .forEach(vertexIndex -> IntStream.range(0, NORMAL_VECTOR_SIZE)
+                                        .forEach(vertexIndex -> IntStream.range(0,
+                                                                                NORMAL_VECTOR_SIZE)
                                                                          .parallel()
-                                                                         .forEach(normalCoordIndex ->
+                                                                         .forEach
+                                                                             (normalCoordIndex ->
                                                                                       finalNormalsInVertexOrder[
-                                                                                          vertexIndex *
-                                                                                          NORMAL_VECTOR_SIZE +
-                                                                                          normalCoordIndex] =
+                                                                                          vertexIndex
+                                                                                          *
+                                                                                          NORMAL_VECTOR_SIZE
+                                                                                          +
+                                                                                          normalCoordIndex]
+                                                                                          =
                                                                                           normalVecCompsByPosIndex.get(
                                                                                               vertexIndex)[normalCoordIndex]));
             }
@@ -272,7 +312,10 @@ public class ObjLoader
         if (posCoordArray != null && posCoords.size() > 0)
         {
             posCoordArray[0] = new float[posCoords.size()];
-            IntStream.range(0, posCoordArray[0].length).parallel().forEach(i -> posCoordArray[0][i] = posCoords.get(i));
+            IntStream.range(0,
+                            posCoordArray[0].length)
+                     .parallel()
+                     .forEach(i -> posCoordArray[0][i] = posCoords.get(i));
         }
         if (texCoordArray != null)
         {
@@ -280,7 +323,8 @@ public class ObjLoader
             {
                 texCoordArray[0] = new float[texCoordsInVertexOrder.length];
                 Float[] finalTexCoordsInVertexOrder1 = texCoordsInVertexOrder;
-                IntStream.range(0, texCoordArray[0].length)
+                IntStream.range(0,
+                                texCoordArray[0].length)
                          .parallel()
                          .forEach(i -> texCoordArray[0][i] = finalTexCoordsInVertexOrder1[i]);
             }
@@ -295,7 +339,8 @@ public class ObjLoader
             {
                 normalVecCompArray[0] = new float[normalVecCompsInVertexOrder.length];
                 Float[] finalNormalsInVertexOrder1 = normalVecCompsInVertexOrder;
-                IntStream.range(0, normalVecCompArray[0].length)
+                IntStream.range(0,
+                                normalVecCompArray[0].length)
                          .parallel()
                          .forEach(i -> normalVecCompArray[0][i] = finalNormalsInVertexOrder1[i]);
             }
@@ -307,7 +352,8 @@ public class ObjLoader
         if (vertexIndexArray != null && indices.size() > 0)
         {
             vertexIndexArray[0] = new int[indices.size()];
-            IntStream.range(0, vertexIndexArray[0].length)
+            IntStream.range(0,
+                            vertexIndexArray[0].length)
                      .parallel()
                      .forEach(i -> vertexIndexArray[0][i] = indices.get(i));
         }

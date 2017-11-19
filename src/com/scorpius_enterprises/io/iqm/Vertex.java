@@ -29,37 +29,65 @@ public class Vertex
 
     public void setPosition(final float[] position)
     {
-        System.arraycopy(position, 0, this.position, 0, this.position.length);
+        System.arraycopy(position,
+                         0,
+                         this.position,
+                         0,
+                         this.position.length);
     }
 
     public void setTexCoord(final float[] texCoord)
     {
-        System.arraycopy(texCoord, 0, this.texCoord, 0, this.texCoord.length);
+        System.arraycopy(texCoord,
+                         0,
+                         this.texCoord,
+                         0,
+                         this.texCoord.length);
     }
 
     public void setNormal(final float[] normal)
     {
-        System.arraycopy(normal, 0, this.normal, 0, this.normal.length);
+        System.arraycopy(normal,
+                         0,
+                         this.normal,
+                         0,
+                         this.normal.length);
     }
 
     public void setTangent(final float[] tangent)
     {
-        System.arraycopy(tangent, 0, this.tangent, 0, this.tangent.length);
+        System.arraycopy(tangent,
+                         0,
+                         this.tangent,
+                         0,
+                         this.tangent.length);
     }
 
     public void setBlendIndices(final byte[] blendIndices)
     {
-        System.arraycopy(blendIndices, 0, this.blendIndices, 0, this.blendIndices.length);
+        System.arraycopy(blendIndices,
+                         0,
+                         this.blendIndices,
+                         0,
+                         this.blendIndices.length);
     }
 
     public void setBlendWeights(final byte[] blendWeights)
     {
-        System.arraycopy(blendWeights, 0, this.blendWeights, 0, this.blendWeights.length);
+        System.arraycopy(blendWeights,
+                         0,
+                         this.blendWeights,
+                         0,
+                         this.blendWeights.length);
     }
 
     public void setColor(final byte[] color)
     {
-        System.arraycopy(color, 0, this.color, 0, this.color.length);
+        System.arraycopy(color,
+                         0,
+                         this.color,
+                         0,
+                         this.color.length);
     }
 
     public float[] getPosition()

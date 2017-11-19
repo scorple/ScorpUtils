@@ -17,7 +17,8 @@ public class BoundingBox
         b2 = new Vertex3f();
     }
 
-    public BoundingBox(Vertex3f b1, Vertex3f b2)
+    public BoundingBox(Vertex3f b1,
+                       Vertex3f b2)
     {
         this.b1 = b1;
         this.b2 = b2;
@@ -34,13 +35,19 @@ public class BoundingBox
         {
             for (Vertex3f vertex : triangle.getVerts())
             {
-                b1.setX(Math.min(b1.getX(), vertex.getX()));
-                b1.setY(Math.min(b1.getY(), vertex.getY()));
-                b1.setZ(Math.min(b1.getZ(), vertex.getZ()));
+                b1.setX(Math.min(b1.getX(),
+                                 vertex.getX()));
+                b1.setY(Math.min(b1.getY(),
+                                 vertex.getY()));
+                b1.setZ(Math.min(b1.getZ(),
+                                 vertex.getZ()));
 
-                b2.setX(Math.max(b2.getX(), vertex.getX()));
-                b2.setY(Math.max(b2.getY(), vertex.getY()));
-                b2.setZ(Math.max(b2.getZ(), vertex.getZ()));
+                b2.setX(Math.max(b2.getX(),
+                                 vertex.getX()));
+                b2.setY(Math.max(b2.getY(),
+                                 vertex.getY()));
+                b2.setZ(Math.max(b2.getZ(),
+                                 vertex.getZ()));
             }
         }
     }
@@ -71,6 +78,8 @@ public class BoundingBox
         float y = b1.getY();
         float z = b1.getZ() + ((b2.getZ() - b1.getZ()) / 2);
 
-        return new Vertex3f(x, y, z);
+        return new Vertex3f(x,
+                            y,
+                            z);
     }
 }

@@ -20,14 +20,20 @@ public class Triangle
         vertices = new int[3];
     }
 
-    public void load(final Header header, final byte[] buf, final int index)
+    public void load(final Header header,
+                     final byte[] buf,
+                     final int index)
     {
         int offset = header.getOfsTriangles() + index * TRIANGLE_SIZE;
 
-        ByteBuffer bb = ByteBuffer.wrap(buf, offset, TRIANGLE_SIZE);
+        ByteBuffer bb = ByteBuffer.wrap(buf,
+                                        offset,
+                                        TRIANGLE_SIZE);
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
-        for (int i = 0; i < vertices.length; ++i)
+        for (int i = 0;
+             i < vertices.length;
+             ++i)
         {
             vertices[i] = bb.getInt();
         }

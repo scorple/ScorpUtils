@@ -41,7 +41,8 @@ public class IqmLoader
         short[]       frames;
         Anim[]        anims;
 
-        InputStream is = IqmLoader.class.getClass().getResourceAsStream(fileName);
+        InputStream is = IqmLoader.class.getClass()
+                                        .getResourceAsStream(fileName);
 
         header.load(is);
 
@@ -51,11 +52,17 @@ public class IqmLoader
 
         byte[] headerBuf = header.getBuf();
 
-        System.arraycopy(headerBuf, 0, buf, 0, headerBuf.length);
+        System.arraycopy(headerBuf,
+                         0,
+                         buf,
+                         0,
+                         headerBuf.length);
 
         try
         {
-            is.read(buf, Header.HEADER_SIZE, fileSize - Header.HEADER_SIZE);
+            is.read(buf,
+                    Header.HEADER_SIZE,
+                    fileSize - Header.HEADER_SIZE);
         }
         catch (IOException e)
         {
@@ -66,26 +73,36 @@ public class IqmLoader
 
         iPosCoordArray = new float[header.getNumVertices() * VertexArray.NUM_POSITION_COMPONENTS];
         iTexCoordArray = new float[header.getNumVertices() * VertexArray.NUM_TEXCOORD_COMPONENTS];
-        iNormalVecCompArray = new float[header.getNumVertices() * VertexArray.NUM_NORMAL_COMPONENTS];
+        iNormalVecCompArray = new float[header.getNumVertices()
+                                        * VertexArray.NUM_NORMAL_COMPONENTS];
         iVertexIndexArray = new int[header.getNumTriangles() * 3];
 
         vertexArrays = new VertexArray[header.getNumVertexArrays()];
 
-        for (int i = 0; i < header.getNumVertexArrays(); ++i)
+        for (int i = 0;
+             i < header.getNumVertexArrays();
+             ++i)
         {
             VertexArray vertexArray = new VertexArray();
 
-            vertexArray.load(header, buf, i, vertices.length);
+            vertexArray.load(header,
+                             buf,
+                             i,
+                             vertices.length);
 
             vertexArrays[i] = vertexArray;
         }
 
-        for (int i = 0; i < header.getNumVertices(); ++i)
+        for (int i = 0;
+             i < header.getNumVertices();
+             ++i)
         {
             vertices[i] = new Vertex();
             Vertex vertex = vertices[i];
 
-            for (int j = 0; j < header.getNumVertexArrays(); ++j)
+            for (int j = 0;
+                 j < header.getNumVertexArrays();
+                 ++j)
             {
                 VertexArray vertexArray = vertexArrays[j];
                 byte[]      compBuf;
@@ -95,7 +112,8 @@ public class IqmLoader
                 {
                     case VertexArray.TYPE_IQM_POSITION:
                         float[] position = new float[VertexArray.NUM_POSITION_COMPONENTS];
-                        compBuf = new byte[VertexArray.NUM_POSITION_COMPONENTS * VertexArray.FLOAT_SIZE];
+                        compBuf = new byte[VertexArray.NUM_POSITION_COMPONENTS
+                                           * VertexArray.FLOAT_SIZE];
                         System.arraycopy(buf,
                                          vertexArray.getOffset() + compBuf.length * i,
                                          compBuf,
@@ -103,7 +121,9 @@ public class IqmLoader
                                          compBuf.length);
                         bb = ByteBuffer.wrap(compBuf);
                         bb.order(ByteOrder.LITTLE_ENDIAN);
-                        for (int k = 0; k < VertexArray.NUM_POSITION_COMPONENTS; ++k)
+                        for (int k = 0;
+                             k < VertexArray.NUM_POSITION_COMPONENTS;
+                             ++k)
                         {
                             position[k] = bb.getFloat();
                         }
@@ -116,7 +136,8 @@ public class IqmLoader
                         break;
                     case VertexArray.TYPE_IQM_TEXCOORD:
                         float[] texcoord = new float[VertexArray.NUM_TEXCOORD_COMPONENTS];
-                        compBuf = new byte[VertexArray.NUM_TEXCOORD_COMPONENTS * VertexArray.FLOAT_SIZE];
+                        compBuf = new byte[VertexArray.NUM_TEXCOORD_COMPONENTS
+                                           * VertexArray.FLOAT_SIZE];
                         System.arraycopy(buf,
                                          vertexArray.getOffset() + compBuf.length * i,
                                          compBuf,
@@ -124,7 +145,9 @@ public class IqmLoader
                                          compBuf.length);
                         bb = ByteBuffer.wrap(compBuf);
                         bb.order(ByteOrder.LITTLE_ENDIAN);
-                        for (int k = 0; k < VertexArray.NUM_TEXCOORD_COMPONENTS; ++k)
+                        for (int k = 0;
+                             k < VertexArray.NUM_TEXCOORD_COMPONENTS;
+                             ++k)
                         {
                             texcoord[k] = bb.getFloat();
                             iTexCoordArray[texCoordArrayIndex++] = texcoord[k];
@@ -133,7 +156,8 @@ public class IqmLoader
                         break;
                     case VertexArray.TYPE_IQM_NORMAL:
                         float[] normal = new float[VertexArray.NUM_NORMAL_COMPONENTS];
-                        compBuf = new byte[VertexArray.NUM_NORMAL_COMPONENTS * VertexArray.FLOAT_SIZE];
+                        compBuf = new byte[VertexArray.NUM_NORMAL_COMPONENTS
+                                           * VertexArray.FLOAT_SIZE];
                         System.arraycopy(buf,
                                          vertexArray.getOffset() + compBuf.length * i,
                                          compBuf,
@@ -141,7 +165,9 @@ public class IqmLoader
                                          compBuf.length);
                         bb = ByteBuffer.wrap(compBuf);
                         bb.order(ByteOrder.LITTLE_ENDIAN);
-                        for (int k = 0; k < VertexArray.NUM_NORMAL_COMPONENTS; ++k)
+                        for (int k = 0;
+                             k < VertexArray.NUM_NORMAL_COMPONENTS;
+                             ++k)
                         {
                             normal[k] = bb.getFloat();
                         }
@@ -154,7 +180,8 @@ public class IqmLoader
                         break;
                     case VertexArray.TYPE_IQM_TANGENT:
                         float[] tangent = new float[VertexArray.NUM_TANGENT_COMPONENTS];
-                        compBuf = new byte[VertexArray.NUM_TANGENT_COMPONENTS * VertexArray.FLOAT_SIZE];
+                        compBuf = new byte[VertexArray.NUM_TANGENT_COMPONENTS
+                                           * VertexArray.FLOAT_SIZE];
                         System.arraycopy(buf,
                                          vertexArray.getOffset() + compBuf.length * i,
                                          compBuf,
@@ -162,7 +189,9 @@ public class IqmLoader
                                          compBuf.length);
                         bb = ByteBuffer.wrap(compBuf);
                         bb.order(ByteOrder.LITTLE_ENDIAN);
-                        for (int k = 0; k < VertexArray.NUM_TANGENT_COMPONENTS; ++k)
+                        for (int k = 0;
+                             k < VertexArray.NUM_TANGENT_COMPONENTS;
+                             ++k)
                         {
                             tangent[k] = bb.getFloat();
                         }
@@ -202,7 +231,8 @@ public class IqmLoader
             sbp.append("vp");
             for (float j : vertex.getPosition())
             {
-                sbp.append(" ").append(j);
+                sbp.append(" ")
+                   .append(j);
             }
             Logger.logD(sbp.toString());
 
@@ -210,7 +240,8 @@ public class IqmLoader
             sbt.append("vt");
             for (float j : vertex.getTexCoord())
             {
-                sbt.append(" ").append(j);
+                sbt.append(" ")
+                   .append(j);
             }
             Logger.logD(sbt.toString());
 
@@ -218,7 +249,8 @@ public class IqmLoader
             sbn.append("vn");
             for (float j : vertex.getNormal())
             {
-                sbn.append(" ").append(j);
+                sbn.append(" ")
+                   .append(j);
             }
             Logger.logD(sbn.toString());
 
@@ -226,7 +258,9 @@ public class IqmLoader
             sbbi.append("vbi");
             for (byte j : vertex.getBlendIndices())
             {
-                sbbi.append(" ").append(String.format("%02x", j));
+                sbbi.append(" ")
+                    .append(String.format("%02x",
+                                          j));
             }
             Logger.logD(sbbi.toString());
 
@@ -234,18 +268,24 @@ public class IqmLoader
             sbbw.append("vbw");
             for (byte j : vertex.getBlendWeights())
             {
-                sbbw.append(" ").append(String.format("%02x", j));
+                sbbw.append(" ")
+                    .append(String.format("%02x",
+                                          j));
             }
             Logger.logD(sbbw.toString());
         }
 
         triangles = new Triangle[header.getNumTriangles()];
 
-        for (int i = 0; i < header.getNumTriangles(); ++i)
+        for (int i = 0;
+             i < header.getNumTriangles();
+             ++i)
         {
             Triangle triangle = new Triangle();
 
-            triangle.load(header, buf, i);
+            triangle.load(header,
+                          buf,
+                          i);
 
             triangles[i] = triangle;
 
@@ -253,7 +293,8 @@ public class IqmLoader
             sb.append("fm");
             for (int j : triangle.getVertices())
             {
-                sb.append(" ").append(j);
+                sb.append(" ")
+                  .append(j);
                 iVertexIndexArray[vertexIndexArrayIndex++] = j;
             }
             Logger.logD(sb.toString());
@@ -261,33 +302,45 @@ public class IqmLoader
 
         meshes = new Mesh[header.getNumMeshes()];
 
-        for (int i = 0; i < header.getNumMeshes(); ++i)
+        for (int i = 0;
+             i < header.getNumMeshes();
+             ++i)
         {
             Mesh mesh = new Mesh();
 
-            mesh.load(header, buf, i);
+            mesh.load(header,
+                      buf,
+                      i);
 
             meshes[i] = mesh;
         }
 
         joints = new Joint[header.getNumJoints()];
 
-        for (int i = 0; i < header.getNumJoints(); ++i)
+        for (int i = 0;
+             i < header.getNumJoints();
+             ++i)
         {
             Joint joint = new Joint();
 
-            joint.load(header, buf, i);
+            joint.load(header,
+                       buf,
+                       i);
 
             joints[i] = joint;
         }
 
         poses = new Pose[header.getNumPoses()];
 
-        for (int i = 0; i < header.getNumPoses(); ++i)
+        for (int i = 0;
+             i < header.getNumPoses();
+             ++i)
         {
             Pose pose = new Pose();
 
-            pose.load(header, buf, i);
+            pose.load(header,
+                      buf,
+                      i);
 
             poses[i] = pose;
         }
@@ -295,10 +348,14 @@ public class IqmLoader
         frames = new short[header.getNumFrames() * header.getNumFrameChannels()];
 
         ByteBuffer bb =
-            ByteBuffer.wrap(buf, header.getOfsFrames(), header.getNumFrames() * header.getNumFrameChannels() * 2);
+            ByteBuffer.wrap(buf,
+                            header.getOfsFrames(),
+                            header.getNumFrames() * header.getNumFrameChannels() * 2);
         bb.order(ByteOrder.LITTLE_ENDIAN);
 
-        for (int i = 0; i < header.getNumFrames() * header.getNumFrameChannels(); ++i)
+        for (int i = 0;
+             i < header.getNumFrames() * header.getNumFrameChannels();
+             ++i)
         {
             frames[i] = bb.getShort();
             Logger.logD("" + frames[i]);
@@ -306,11 +363,15 @@ public class IqmLoader
 
         anims = new Anim[header.getNumAnims()];
 
-        for (int i = 0; i < header.getNumAnims(); ++i)
+        for (int i = 0;
+             i < header.getNumAnims();
+             ++i)
         {
             Anim anim = new Anim();
 
-            anim.load(header, buf, i);
+            anim.load(header,
+                      buf,
+                      i);
 
             anims[i] = anim;
         }
