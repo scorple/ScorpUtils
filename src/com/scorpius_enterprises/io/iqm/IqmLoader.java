@@ -18,7 +18,7 @@ public class IqmLoader
 {
     public static final String LOG_TAG = "IqmLoader";
 
-    public static Model loadIBO(final String fileName)
+    public static Model loadModel(final String fileName)
     {
         Model ret = null;
 

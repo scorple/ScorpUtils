@@ -12,6 +12,6 @@ public class Driver
         Logger.init(0);
         Logger.registerTag(IqmLoader.LOG_TAG);
 
-        IqmLoader.loadIBO("/test/test_arm.iqm");
+        IqmLoader.loadModel("/test/test_arm.iqm");
     }
 }
