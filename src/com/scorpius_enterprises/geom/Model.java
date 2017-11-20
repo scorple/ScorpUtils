@@ -1,6 +1,6 @@
-package com.scorpius_enterprises.io.iqm;
+package com.scorpius_enterprises.geom;
 
-public class IqmWrapper
+public class Model
 {
     private int     numIndices;
     private float[] posCoordArray;
@@ -8,11 +8,11 @@ public class IqmWrapper
     private float[] normalVecCompArray;
     private int[]   vertexIndexArray;
 
-    IqmWrapper(final int numIndices,
-               final float[] posCoordArray,
-               final float[] texCoordArray,
-               final float[] normalVecCompArray,
-               final int[] vertexIndexArray)
+    public Model(final int numIndices,
+                 final float[] posCoordArray,
+                 final float[] texCoordArray,
+                 final float[] normalVecCompArray,
+                 final int[] vertexIndexArray)
     {
         this.numIndices = numIndices;
         this.posCoordArray = posCoordArray;

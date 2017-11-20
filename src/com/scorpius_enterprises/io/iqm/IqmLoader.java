@@ -1,5 +1,6 @@
 package com.scorpius_enterprises.io.iqm;
 
+import com.scorpius_enterprises.geom.Model;
 import com.scorpius_enterprises.log.Logger;
 
 import java.io.IOException;
@@ -17,9 +18,9 @@ public class IqmLoader
 {
     public static final String LOG_TAG = "IqmLoader";
 
-    public static IqmWrapper loadIBO(final String fileName)
+    public static Model loadIBO(final String fileName)
     {
-        IqmWrapper ret = null;
+        Model ret = null;
 
         int numIndices = 0;
 
@@ -388,11 +389,11 @@ public class IqmLoader
         Logger.logI("" + numIndices,
                     LOG_TAG);
 
-        ret = new IqmWrapper(numIndices,
-                             posCoordArray,
-                             texCoordArray,
-                             normalVecCompArray,
-                             vertexIndexArray);
+        ret = new Model(numIndices,
+                        posCoordArray,
+                        texCoordArray,
+                        normalVecCompArray,
+                        vertexIndexArray);
 
         return ret;
     }
