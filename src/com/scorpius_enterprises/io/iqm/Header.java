@@ -89,111 +89,111 @@ public class Header
                         IqmLoader.LOG_TAG);
 
             version = bb.getInt();
-            Logger.logD("" + version,
+            Logger.logD("version:<" + version + ">",
                         IqmLoader.LOG_TAG);
 
             fileSize = bb.getInt();
-            Logger.logD("" + fileSize,
+            Logger.logD("fileSize:<" + fileSize + ">",
                         IqmLoader.LOG_TAG);
 
             flags = bb.getInt();
-            Logger.logD("" + flags,
+            Logger.logD("flags:<" + flags + ">",
                         IqmLoader.LOG_TAG);
 
             numText = bb.getInt();
-            Logger.logD("" + numText,
+            Logger.logD("numText:<" + numText + ">",
                         IqmLoader.LOG_TAG);
 
             ofsText = bb.getInt();
-            Logger.logD("" + ofsText,
+            Logger.logD("ofsText:<" + ofsText + ">",
                         IqmLoader.LOG_TAG);
 
             numMeshes = bb.getInt();
-            Logger.logD("" + numMeshes,
+            Logger.logD("numMeshes:<" + numMeshes + ">",
                         IqmLoader.LOG_TAG);
 
             ofsMeshes = bb.getInt();
-            Logger.logD("" + ofsMeshes,
+            Logger.logD("ofsMeshes:<" + ofsMeshes + ">",
                         IqmLoader.LOG_TAG);
 
             numVertexArrays = bb.getInt();
-            Logger.logD("" + numVertexArrays,
+            Logger.logD("numVertexArrays:<" + numVertexArrays + ">",
                         IqmLoader.LOG_TAG);
 
             numVertices = bb.getInt();
-            Logger.logD("" + numVertices,
+            Logger.logD("numVertices:<" + numVertices + ">",
                         IqmLoader.LOG_TAG);
 
             ofsVertexArrays = bb.getInt();
-            Logger.logD("" + ofsVertexArrays,
+            Logger.logD("ofsVertexArrays:<" + ofsVertexArrays + ">",
                         IqmLoader.LOG_TAG);
 
             numTriangles = bb.getInt();
-            Logger.logD("" + numTriangles,
+            Logger.logD("numTriangles:<" + numTriangles + ">",
                         IqmLoader.LOG_TAG);
 
             ofsTriangles = bb.getInt();
-            Logger.logD("" + ofsTriangles,
+            Logger.logD("ofsTriangles:<" + ofsTriangles + ">",
                         IqmLoader.LOG_TAG);
 
             ofsAdjacency = bb.getInt();
-            Logger.logD("" + ofsAdjacency,
+            Logger.logD("ofsAdjacency:<" + ofsAdjacency + ">",
                         IqmLoader.LOG_TAG);
 
             numJoints = bb.getInt();
-            Logger.logD("" + numJoints,
+            Logger.logD("numJoints:<" + numJoints + ">",
                         IqmLoader.LOG_TAG);
 
             ofsJoints = bb.getInt();
-            Logger.logD("" + ofsJoints,
+            Logger.logD("ofsJoints:<" + ofsJoints + ">",
                         IqmLoader.LOG_TAG);
 
             numPoses = bb.getInt();
-            Logger.logD("" + numPoses,
+            Logger.logD("numPoses:<" + numPoses + ">",
                         IqmLoader.LOG_TAG);
 
             ofsPoses = bb.getInt();
-            Logger.logD("" + ofsPoses,
+            Logger.logD("ofsPoses:<" + ofsPoses + ">",
                         IqmLoader.LOG_TAG);
 
             numAnims = bb.getInt();
-            Logger.logD("" + numAnims,
+            Logger.logD("numAnims:<" + numAnims + ">",
                         IqmLoader.LOG_TAG);
 
             ofsAnims = bb.getInt();
-            Logger.logD("" + ofsAnims,
+            Logger.logD("ofsAnims:<" + ofsAnims + ">",
                         IqmLoader.LOG_TAG);
 
             numFrames = bb.getInt();
-            Logger.logD("" + numFrames,
+            Logger.logD("numFrames:<" + numFrames + ">",
                         IqmLoader.LOG_TAG);
 
             numFrameChannels = bb.getInt();
-            Logger.logD("" + numFrameChannels,
+            Logger.logD("numFrameChannels:<" + numFrameChannels + ">",
                         IqmLoader.LOG_TAG);
 
             ofsFrames = bb.getInt();
-            Logger.logD("" + ofsFrames,
+            Logger.logD("ofsFrames:<" + ofsFrames + ">",
                         IqmLoader.LOG_TAG);
 
             ofsBounds = bb.getInt();
-            Logger.logD("" + ofsBounds,
+            Logger.logD("ofsBounds:<" + ofsBounds + ">",
                         IqmLoader.LOG_TAG);
 
             numComment = bb.getInt();
-            Logger.logD("" + numComment,
+            Logger.logD("numComment:<" + numComment + ">",
                         IqmLoader.LOG_TAG);
 
             ofsComment = bb.getInt();
-            Logger.logD("" + ofsComment,
+            Logger.logD("ofsComment:<" + ofsComment + ">",
                         IqmLoader.LOG_TAG);
 
             numExtensions = bb.getInt();
-            Logger.logD("" + numExtensions,
+            Logger.logD("numExtensions:<" + numExtensions + ">",
                         IqmLoader.LOG_TAG);
 
             ofsExtensions = bb.getInt();
-            Logger.logD("" + ofsExtensions,
+            Logger.logD("ofsExtensions:<" + ofsExtensions + ">",
                         IqmLoader.LOG_TAG);
         }
         catch (IOException e)
