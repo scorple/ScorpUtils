@@ -1,10 +1,10 @@
-package com.scorpius_enterprises.net2;
+package com.scorpius_enterprises.net;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
 /**
- * {@link Server com.scorpius_enterprises.net2.Server}
+ * {@link Server com.scorpius_enterprises.net.Server}
  *
  * @author Scorple
  * @since 2017-05-02

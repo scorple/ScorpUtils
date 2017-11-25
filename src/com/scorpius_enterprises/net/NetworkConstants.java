@@ -1,4 +1,4 @@
-package com.scorpius_enterprises.net2;
+package com.scorpius_enterprises.net;
 
 /**
  * {@link NetworkConstants networking.NetworkConstants}

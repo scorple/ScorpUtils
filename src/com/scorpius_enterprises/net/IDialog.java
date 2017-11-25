@@ -1,7 +1,7 @@
-package com.scorpius_enterprises.net2;
+package com.scorpius_enterprises.net;
 
 /**
- * {@link IDialog com.scorpius_enterprises.net2.IDialog}
+ * {@link IDialog com.scorpius_enterprises.net.IDialog}
  *
  * @author Scorple
  * @since 2017-05-02

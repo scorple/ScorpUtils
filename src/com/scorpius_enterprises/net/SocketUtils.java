@@ -1,6 +1,4 @@
-package com.scorpius_enterprises.net2;
-
-import com.scorpius_enterprises.log.Logger;
+package com.scorpius_enterprises.net;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -35,54 +33,54 @@ abstract class SocketUtils
     static int readUTF(final Socket socket,
                        final String[] out)
     {
-        Logger.logD("enter trace");
+        //Logger.logD("enter trace");
 
         if (out != null)
         {
-            Logger.logD("out != null");
+            //Logger.logD("out != null");
 
             out[0] = null;
 
             if (socket != null)
             {
-                Logger.logD("socket != null");
+                //Logger.logD("socket != null");
 
                 try
                 {
-                    Logger.logD("getting dis");
+                    //Logger.logD("getting dis");
 
                     DataInputStream dis = new DataInputStream(socket.getInputStream());
 
-                    Logger.logD("got dis");
+                    //Logger.logD("got dis");
 
                     try
                     {
-                        Logger.logD("checking available");
+                        //Logger.logD("checking available");
 
                         if (dis.available() > 0)
                         {
-                            Logger.logD("performing read");
+                            //Logger.logD("performing read");
 
                             out[0] = dis.readUTF();
 
-                            Logger.logD("exit trace");
+                            //Logger.logD("exit trace");
 
                             return 0;
                         }
 
-                        Logger.logD("exit trace");
+                        //Logger.logD("exit trace");
 
                         return -1;
                     }
                     catch (EOFException e)
                     {
-                        Logger.logD("exit trace");
+                        //Logger.logD("exit trace");
 
                         return -1;
                     }
                     catch (Exception e)
                     {
-                        Logger.logD("exit trace");
+                        //Logger.logD("exit trace");
 
                         return -5;
                     }
@@ -91,16 +89,16 @@ abstract class SocketUtils
                 {
                     e.printStackTrace();
 
-                    Logger.logD("exit trace");
+                    //Logger.logD("exit trace");
 
                     return -4;
                 }
             }
-            Logger.logD("exit trace");
+            //Logger.logD("exit trace");
 
             return -3;
         }
-        Logger.logD("exit trace");
+        //Logger.logD("exit trace");
 
         return -2;
     }
@@ -108,33 +106,33 @@ abstract class SocketUtils
     static int writeUTF(final Socket socket,
                         final String out)
     {
-        Logger.logD("enter trace");
+        //Logger.logD("enter trace");
 
         if (out != null)
         {
-            Logger.logD("out != null");
+            //Logger.logD("out != null");
 
             if (socket != null)
             {
-                Logger.logD("socket != null");
+                //Logger.logD("socket != null");
 
                 try
                 {
-                    Logger.logD("getting dos");
+                    //Logger.logD("getting dos");
 
                     DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
-                    Logger.logD("got dos");
+                    //Logger.logD("got dos");
 
-                    Logger.logD("performing write");
+                    //Logger.logD("performing write");
 
                     dos.writeUTF(out);
 
-                    Logger.logD("performing flush");
+                    //Logger.logD("performing flush");
 
                     dos.flush();
 
-                    Logger.logD("exit trace");
+                    //Logger.logD("exit trace");
 
                     return 0;
                 }
@@ -142,16 +140,16 @@ abstract class SocketUtils
                 {
                     e.printStackTrace();
 
-                    Logger.logD("exit trace");
+                    //Logger.logD("exit trace");
 
                     return -3;
                 }
             }
-            Logger.logD("exit trace");
+            //Logger.logD("exit trace");
 
             return -2;
         }
-        Logger.logD("exit trace");
+        //Logger.logD("exit trace");
 
         return -1;
     }

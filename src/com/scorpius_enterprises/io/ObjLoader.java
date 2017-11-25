@@ -287,15 +287,15 @@ public class ObjLoader
                                                                          .parallel()
                                                                          .forEach
                                                                              (normalCoordIndex ->
-                                                                                      finalNormalsInVertexOrder[
-                                                                                          vertexIndex
-                                                                                          *
-                                                                                          NORMAL_VECTOR_SIZE
-                                                                                          +
-                                                                                          normalCoordIndex]
-                                                                                          =
-                                                                                          normalVecCompsByPosIndex.get(
-                                                                                              vertexIndex)[normalCoordIndex]));
+                                                                                  finalNormalsInVertexOrder[
+                                                                                      vertexIndex
+                                                                                      *
+                                                                                      NORMAL_VECTOR_SIZE
+                                                                                      +
+                                                                                      normalCoordIndex]
+                                                                                      =
+                                                                                      normalVecCompsByPosIndex.get(
+                                                                                          vertexIndex)[normalCoordIndex]));
             }
         }
         catch (Exception X)

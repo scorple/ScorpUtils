@@ -1,10 +1,10 @@
-package com.scorpius_enterprises.net2;
+package com.scorpius_enterprises.net;
 
 import java.io.IOException;
 import java.net.Socket;
 
 /**
- * {@link Dialog com.scorpius_enterprises.net2.Dialog}
+ * {@link Dialog com.scorpius_enterprises.net.Dialog}
  *
  * @author Scorple
  * @since 2017-05-02

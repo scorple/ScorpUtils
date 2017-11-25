@@ -1,4 +1,4 @@
-package com.scorpius_enterprises.net2;
+package com.scorpius_enterprises.net;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 /**
- * {@link InternetUtils com.scorpius_enterprises.net2.InternetUtils}
+ * {@link InternetUtils com.scorpius_enterprises.net.InternetUtils}
  *
  * @author Scorple
  * @since 2017-05-03
@@ -17,7 +17,7 @@ public class InternetUtils
     {
         try
         {
-            URL            awsCheckIpUrl = new URL("http://checkip.amazonaws.com");
+            URL awsCheckIpUrl = new URL("http://checkip.amazonaws.com");
             BufferedReader
                 br
                 = new BufferedReader(new InputStreamReader(awsCheckIpUrl
