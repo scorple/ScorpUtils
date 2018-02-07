@@ -37,6 +37,11 @@ public class Logger
 
     }
 
+    static
+    {
+        INSTANCE = new Logger();
+    }
+
     private static void checkInstance()
     {
         if (null == INSTANCE)
